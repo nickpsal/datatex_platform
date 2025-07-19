@@ -1,0 +1,26 @@
+# Node (Angular frontend)
+fronτ/node_modules/
+front/dist/
+front/.angular/cache/
+front/.env
+
+# Laravel (PHP backend)
+back/vendor/
+back/storage/
+back/.env
+back/node_modules/
+back/public/storage
+back/bootstrap/cache/*.php
+back/.idea/
+back/.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Others
+*.log
+*.sqlite
+*.zip
+*.bak
+*.tmp
