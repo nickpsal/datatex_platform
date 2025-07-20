@@ -1,0 +1,24 @@
+<app-sidebar></app-sidebar>
+
+<main
+  [class.ml-64]="isToggled()"
+  [class.ml-4]="!isToggled()"
+  class="transition-all duration-300 p-6 min-h-screen bg-gray-100"
+>
+  <!-- Flex container for button + title -->
+  <div class="flex items-center space-x-4 mb-4">
+    <!-- Toggle Button -->
+    <button
+      (click)="toggleSidebar()"
+      class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
+    >
+      <span *ngIf="!isToggled()">☰</span>
+      <span *ngIf="isToggled()">✕</span>
+    </button>
+
+    <!-- Title -->
+    <h1 class="text-3xl font-semibold">Datatex Dashboard</h1>
+  </div>
+
+  <p class="text-gray-600">Welcome to your dashboard!</p>
+</main>
