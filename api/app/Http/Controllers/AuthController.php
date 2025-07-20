@@ -19,7 +19,19 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        $cookie = cookie(
+            'token',         // Όνομα cookie
+            $token,          // JWT token
+            60,              // Διάρκεια σε λεπτά
+            '/',             // Path
+            null,            // Domain (ή '.datatex.gr' σε deployment)
+            true,            // Secure (true μόνο για HTTPS)
+            true,            // HttpOnly
+            false,           // Raw
+            'Lax'            // SameSite: 'Lax' ή 'Strict'
+        );
+
+        return response()->json(['status' => 'success'])->cookie($cookie);
     }
 
     // 📝 Register
@@ -43,9 +55,10 @@ class AuthController extends Controller
 
         $user->assignRole('user'); // Assign default role
 
-        $token = JWTAuth::fromUser($user);
-
-        return $this->respondWithToken($token);
+        return response()->json([
+            'status' => 'success',
+            'user'   => $user,
+        ], 201);
     }
 
     // 👤 Επιστροφή χρήστη
