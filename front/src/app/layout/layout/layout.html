@@ -1,6 +1,7 @@
-`
-<app-topnav />
-<div class="p-4">
-  <router-outlet />
+<div class="min-h-screen flex flex-col bg-white dark:bg-gray-900 text-black dark:text-white">
+  <app-topnav class="sticky top-0 z-50" />
+  <main class="flex-1 p-4">
+    <router-outlet />
+  </main>
 </div>
-`
+

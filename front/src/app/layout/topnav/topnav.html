@@ -1,8 +1,17 @@
-<nav class="w-full bg-gray-700 text-white p-4 flex justify-between">
+
+<nav
+  class="w-full bg-gray-700 text-white p-4 flex justify-between items-center dark:bg-black"
+>
   <div class="font-bold">MyApp</div>
-  <div class="space-x-4">
+
+  <div class="flex items-center space-x-4">
     <a routerLink="/" class="hover:underline">Home</a>
     <a routerLink="/admin" class="hover:underline">Dashboard</a>
     <a routerLink="/login" class="hover:underline">Login</a>
+
+    <button (click)="toggleDarkMode()" class="ml-4 text-xl">
+      {{ isDark ? "☀️" : "🌙" }}
+    </button>
   </div>
 </nav>
+
