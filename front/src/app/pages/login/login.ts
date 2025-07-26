@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.authService.checkAuth().subscribe(isAuth => {
       if (isAuth) {
-        this.router.navigate(['/admin']);
+        this.router.navigate(['/home']);
       }
     });
   }
@@ -35,7 +35,7 @@ export class LoginComponent implements OnInit {
       this.authService.login({ email, password }).subscribe({
         next: (res) => {
           console.log('Login successful:', res);
-          this.router.navigate(['/']); // ή οποιοδήποτε protected route
+          this.router.navigate(['home']); 
         },
         error: (err) => {
           console.error('Login failed:', err);
