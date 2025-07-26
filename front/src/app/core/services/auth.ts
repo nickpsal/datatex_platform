@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { map, catchError, of } from 'rxjs';
 
 interface loginPayload {
 	email: string;
@@ -35,4 +36,18 @@ export class AuthService {
 			tap(() => this.router.navigate(['/login']))
 		);
 	}
+
+	checkAuth(): Observable<boolean> {
+	return this.http.get<{ user: any }>(`${this.API_URL}/me`, {
+		withCredentials: true
+	}).pipe(
+		tap({
+			next: () => {},
+			error: () => this.router.navigate(['/login'])
+		}),
+		// Επιστρέφει true αν είναι authenticated
+		map(() => true),
+		catchError(() => of(false))
+	);
+}
 }
