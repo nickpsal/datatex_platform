@@ -9,8 +9,10 @@
 
     <ng-container *ngIf="user$ | async as user; else loginLink">
       <button [matMenuTriggerFor]="userMenu">{{ user.name }}</button>
-      <mat-menu #userMenu="matMenu" class="bg-gray-800 text-white mt-5">
+      <mat-menu #userMenu="matMenu" class="bg-gray-800 text-white mt-4">
         <button mat-menu-item (click)="logout()">Logout</button>
+        <button mat-menu-item routerLink="/profile">Profile</button>
+        <button mat-menu-item routerLink="/settings">Settings</button>
       </mat-menu>
     </ng-container>
 
