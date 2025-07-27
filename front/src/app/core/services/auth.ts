@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { map, catchError, of } from 'rxjs';
 
@@ -23,6 +23,9 @@ export class AuthService {
 	private router = inject(Router);
 	private readonly API_URL = environment.apiUrl;
 
+	private userSubject = new BehaviorSubject<any | null>(null);
+	user$ = this.userSubject.asObservable();
+
 	login(payload: loginPayload): Observable<any> {
 		return this.http.post<any>(`${this.API_URL}/login`, payload, {
 			withCredentials: true
@@ -38,16 +41,16 @@ export class AuthService {
 	}
 
 	checkAuth(): Observable<boolean> {
-	return this.http.get<{ user: any }>(`${this.API_URL}/me`, {
-		withCredentials: true
-	}).pipe(
-		tap({
-			next: () => {},
-			error: () => this.router.navigate(['/login'])
-		}),
-		// Επιστρέφει true αν είναι authenticated
-		map(() => true),
-		catchError(() => of(false))
-	);
-}
+		return this.http.get<{ user: any }>(`${this.API_URL}/me`, {
+			withCredentials: true
+		}).pipe(
+			tap({
+				next: res => this.userSubject.next(res),
+				error: () => this.router.navigate(['/login'])
+			}),
+			// Επιστρέφει true αν είναι authenticated
+			map(() => true),
+			catchError(() => of(false))
+		);
+	}
 }

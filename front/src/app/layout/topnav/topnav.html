@@ -1,17 +1,25 @@
-
 <nav
   class="w-full bg-gray-700 text-white p-4 flex justify-between items-center dark:bg-black"
 >
-  <div class="font-bold">MyApp</div>
+  <div class="font-bold">Datatex Platform</div>
 
   <div class="flex items-center space-x-4">
     <a routerLink="/" class="hover:underline">Home</a>
     <a routerLink="/admin" class="hover:underline">Dashboard</a>
-    <a routerLink="/login" class="hover:underline">Login</a>
+
+    <ng-container *ngIf="user$ | async as user; else loginLink">
+      <button [matMenuTriggerFor]="userMenu">{{ user.name }}</button>
+      <mat-menu #userMenu="matMenu" class="bg-gray-800 text-white mt-5">
+        <button mat-menu-item (click)="logout()">Logout</button>
+      </mat-menu>
+    </ng-container>
+
+    <ng-template #loginLink>
+      <a routerLink="/login" class="hover:underline">Login</a>
+    </ng-template>
 
     <button (click)="toggleDarkMode()" class="ml-4 text-xl">
       {{ isDark ? "☀️" : "🌙" }}
     </button>
   </div>
 </nav>
-
