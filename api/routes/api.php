@@ -16,6 +16,8 @@ Route::get('/getcategories', [CategoriesController::class, 'getAllCategories']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
+    Route::put('/updateuser', [AuthController::class, 'updateUser']);
+    Route::delete('/deleteuser', [AuthController::class, 'deleteUser']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
 

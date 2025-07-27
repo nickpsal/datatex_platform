@@ -57,9 +57,10 @@ class AuthController extends Controller
         }
 
         $user = User::create([
-            'name'     => $request->name,
-            'email'    => $request->email,
-            'password' => Hash::make($request->password),
+            'name'          => $request->name,
+            'email'         => $request->email,
+            'password'      => Hash::make($request->password),
+            'avatar_url'    => isset($request->avatar_url) ? $request->avatar_url : config('app.url') .  '/assets/images/demo-avatar.png', // Default avatar
         ]);
 
         $user->assignRole('user'); // Assign default role
@@ -68,6 +69,58 @@ class AuthController extends Controller
             'status' => 'success',
             'user'   => $user,
         ], 201);
+    }
+
+    public function updateUser(Request $request)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        $targetUser = $user; // default: the authenticated user
+
+        if ($user->hasRole('admin') && $request->input('id')) {
+            $targetUser = User::find($request->input('id'));
+            if (!$targetUser) {
+                return response()->json(['error' => 'User not found.'], 404);
+            }
+        } elseif ($request->filled('id')) {
+            // Non-admins shouldn't be allowed to update other users
+            return response()->json(['error' => 'Unauthorized to update another user.'], 403);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name'     => 'sometimes|required|string|max:255',
+            'email'    => 'sometimes|required|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'sometimes|nullable|string|min:6|confirmed',
+            'avatar_url' => 'sometimes|nullable|url',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), 422);
+        }
+
+        $targetUser->update($request->only('name', 'email', 'password', 'avatar_url'));
+
+        return response()->json(['status' => 'success', 'user' => $targetUser]);
+    }
+
+    public function deleteUser(Request $request)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        $targetUser = $user; // default: the authenticated user
+
+        if ($user->hasRole('admin') && $request->filled('id')) {
+            $targetUser = User::find($request->input('id'));
+            if (!$targetUser) {
+                return response()->json(['error' => 'User not found.'], 404);
+            }
+        } elseif ($request->filled('id')) {
+            // Non-admins shouldn't be allowed to update other users
+            return response()->json(['error' => 'Unauthorized to update another user.'], 403);
+        }
+
+        $targetUser->delete();
+        return response()->json(['status' => 'success', 'message' => 'User deleted successfully']);
+
+        return response()->json(['status' => 'error', 'message' => 'User not found'], 404);
     }
 
     // 👤 Επιστροφή χρήστη

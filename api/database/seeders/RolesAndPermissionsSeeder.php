@@ -47,7 +47,6 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // 🧩 Ρόλοι
         $admin  = Role::firstOrCreate(['name' => 'admin']);
-        $editor = Role::firstOrCreate(['name' => 'editor']);
         $author = Role::firstOrCreate(['name' => 'author']);
         $user   = Role::firstOrCreate(['name' => 'user']);
 
@@ -56,19 +55,12 @@ class RolesAndPermissionsSeeder extends Seeder
         // ✅ Admin: τα πάντα
         $admin->givePermissionTo(Permission::all());
 
-        // ✍️ Editor: πλήρη έλεγχο άρθρων, όχι roles/users
-        $editor->givePermissionTo([
+        // ✍️ Author: πλήρη έλεγχο άρθρων, όχι roles/users
+        $author->givePermissionTo([
             'add articles',
             'edit articles',
             'delete articles',
             'publish articles',
-        ]);
-
-        // 📝 Author: μόνο δικά του
-        $author->givePermissionTo([
-            'add articles',
-            'edit own articles',
-            'delete own articles',
         ]);
 
         // 👀 User: μόνο view, δεν του δίνουμε καθόλου permissions
