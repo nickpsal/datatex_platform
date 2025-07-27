@@ -25,8 +25,8 @@ class AuthController extends Controller
             60,              // Διάρκεια σε λεπτά
             '/',             // Path
             null,            // Domain (ή '.datatex.gr' σε deployment)
-            true,            // Secure (true μόνο για HTTPS)
-            true,            // HttpOnly
+            false,           // Secure (true μόνο για HTTPS)
+            false,           // HttpOnly
             false,           // Raw
             'Lax'            // SameSite: 'Lax' ή 'Strict'
         );

@@ -18,10 +18,10 @@ export class Topnav implements OnInit {
 	user$: Observable<any> | null = null;
 	isAdmin$: Observable<boolean> | null = null;
 
-	constructor(private theme: ThemeService, private authService: AuthService, private router: Router, private coreService: CoreService) { }
+	constructor(private theme: ThemeService, private authService: AuthService, private router: Router, private core: CoreService) { }
 
 	ngOnInit(): void {
-		if (this.coreService.hasJwtCookie()) {
+		if (this.core.hasJwtCookie()) {
 			this.authService.checkAuth().subscribe();
 			this.isAdmin$ = this.authService.isAdmin();
 			this.user$ = this.authService.user$;

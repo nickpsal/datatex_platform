@@ -1,12 +1,12 @@
 import { Injectable } from "@angular/core";
 
 @Injectable({
-	providedIn: 'root'
+    providedIn: 'root'
 })
 export class CoreService {
 
     hasJwtCookie(): boolean {
-        return document.cookie.includes('token=');
+        return this.getCookie('token') !== null ? true : false;
     }
 
     hasThemeCookie(): string | null {
@@ -15,13 +15,13 @@ export class CoreService {
     }
 
     setCookie(name: string, value: string, days: number): void {
-		const expires = new Date(Date.now() + days * 864e5).toUTCString();
-		document.cookie = `${name}=${value}; expires=${expires}; path=/;`;
-	}
+        const expires = new Date(Date.now() + days * 864e5).toUTCString();
+        document.cookie = `${name}=${value}; expires=${expires}; path=/;`;
+    }
 
-	getCookie(name: string): string | null {
-		const cookies = document.cookie.split(';').map(c => c.trim());
-		const found = cookies.find(c => c.startsWith(`${name}=`));
-		return found ? found.split('=')[1] : null;
-	}
+    getCookie(name: string): string | null {
+        const cookies = document.cookie.split(';').map(c => c.trim());
+        const found = cookies.find(c => c.startsWith(`${name}=`));
+        return found ? found.split('=')[1] : null;
+    }
 }   
