@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
-import { ThemeService } from '../../core/services/theme';
-import { AuthService } from '../../core/services/auth';
+import { ThemeService } from '../../core/services/theme/theme';
+import { AuthService } from '../../core/services/auth/auth';
 import { Observable } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -20,9 +20,11 @@ export class Topnav implements OnInit {
 	constructor(private theme: ThemeService, private authService: AuthService, private router: Router) { }
 
 	ngOnInit(): void {
-		this.authService.checkAuth().subscribe();
-		this.user$ = this.authService.user$;
-		this.isAdmin$ = this.authService.isAdmin();
+		if (this.authService.hasJwtCookie()) {
+			this.authService.checkAuth().subscribe();
+			this.isAdmin$ = this.authService.isAdmin();
+			this.user$ = this.authService.user$;
+		}
 	}
 
 	get isDark() {
@@ -30,7 +32,7 @@ export class Topnav implements OnInit {
 	}
 
 	toggleDarkMode() {
-		this.theme.toggleTheme();	
+		this.theme.toggleTheme();
 	}
 
 	logout() {

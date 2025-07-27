@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { map, catchError, of } from 'rxjs';
-import { ApiService } from './api';
+import { ApiService } from '../api/api';
 
 interface loginPayload {
 	email: string;
@@ -44,6 +44,15 @@ export class AuthService {
 				this.router.navigate(['/home']);
 			})
 		).subscribe();
+	}
+
+	hasJwtCookie(): boolean {
+		return document.cookie.includes('token=');
+	}
+
+	hasThemeCookie(): string | null {
+		const match = document.cookie.match(/darkMode=([^;]+)/);
+		return match ? match[1] : null;
 	}
 
 	checkAuth(): Observable<boolean> {

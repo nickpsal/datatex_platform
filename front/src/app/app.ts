@@ -2,7 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
-import { AuthService } from './core/services/auth';
+import { AuthService } from './core/services/auth/auth';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +16,8 @@ export class App {
   constructor(private auth: AuthService) { }
 
   ngOnInit(): void {
-    this.auth.checkAuth().subscribe(); // μόνο αυτό αρκεί
+    if (this.auth.hasJwtCookie()) {
+      this.auth.checkAuth().subscribe();
+    }
   }
 }
