@@ -1,6 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-
+import { CoreService } from './core/services/core/core';
 import { MatButtonModule } from '@angular/material/button';
 import { AuthService } from './core/services/auth/auth';
 
@@ -13,10 +13,10 @@ import { AuthService } from './core/services/auth/auth';
 })
 export class App {
   protected readonly title = signal('front');
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private core: CoreService) { }
 
   ngOnInit(): void {
-    if (this.auth.hasJwtCookie()) {
+    if (this.core.hasJwtCookie()) {
       this.auth.checkAuth().subscribe();
     }
   }

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { ThemeService } from '../../core/services/theme/theme';
 import { AuthService } from '../../core/services/auth/auth';
+import { CoreService } from '../../core/services/core/core';
 import { Observable } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 
@@ -17,10 +18,10 @@ export class Topnav implements OnInit {
 	user$: Observable<any> | null = null;
 	isAdmin$: Observable<boolean> | null = null;
 
-	constructor(private theme: ThemeService, private authService: AuthService, private router: Router) { }
+	constructor(private theme: ThemeService, private authService: AuthService, private router: Router, private coreService: CoreService) { }
 
 	ngOnInit(): void {
-		if (this.authService.hasJwtCookie()) {
+		if (this.coreService.hasJwtCookie()) {
 			this.authService.checkAuth().subscribe();
 			this.isAdmin$ = this.authService.isAdmin();
 			this.user$ = this.authService.user$;

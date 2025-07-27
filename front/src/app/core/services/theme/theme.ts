@@ -1,37 +1,37 @@
-// src/app/core/services/theme.service.ts
 import { Injectable } from '@angular/core';
+import { CoreService } from '../core/core';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
-  private darkModeKey = 'darkMode';
+	private darkModeKey = 'darkMode';
 
-  constructor() {
-    this.loadTheme();
-  }
+	constructor(private core: CoreService) {
+		this.loadTheme();
+	}
 
-  toggleTheme(): void {
-    const html = document.documentElement;
-    const isDark = html.classList.contains('dark');
+	toggleTheme(): void {
+		const html = document.documentElement;
+		const isDark = html.classList.contains('dark');
 
-    if (isDark) {
-      html.classList.remove('dark');
-      localStorage.setItem(this.darkModeKey, 'light');
-    } else {
-      html.classList.add('dark');
-      localStorage.setItem(this.darkModeKey, 'dark');
-    }
-  }
+		if (isDark) {
+			html.classList.remove('dark');
+			this.core.setCookie(this.darkModeKey, 'light', 30);
+		} else {
+			html.classList.add('dark');
+			this.core.setCookie(this.darkModeKey, 'dark', 30);
+		}
+	}
 
-  loadTheme(): void {
-    const saved = localStorage.getItem(this.darkModeKey);
-    if (saved === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }
+	loadTheme(): void {
+		const saved = this.core.getCookie(this.darkModeKey);
+		if (saved === 'dark') {
+			document.documentElement.classList.add('dark');
+		} else {
+			document.documentElement.classList.remove('dark');
+		}
+	}
 
-  isDarkMode(): boolean {
-    return document.documentElement.classList.contains('dark');
-  }
+	isDarkMode(): boolean {
+		return document.documentElement.classList.contains('dark');
+	}
 }
