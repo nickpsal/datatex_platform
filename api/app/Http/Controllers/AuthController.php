@@ -123,6 +123,16 @@ class AuthController extends Controller
         return response()->json(['status' => 'error', 'message' => 'User not found'], 404);
     }
 
+    public function isActive(Request $request)
+    {
+        $userID = $request->input('id');
+        $user = User::find($userID);
+        if ($user) {
+            return response()->json(['isActive' => $user->isActive === 1 ? true : false]);
+        }
+        return response()->json(['error' => 'User not found'], 404);
+    }
+
     // 👤 Επιστροφή χρήστη
     public function me()
     {

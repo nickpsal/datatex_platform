@@ -18,6 +18,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::put('/updateuser', [AuthController::class, 'updateUser']);
     Route::delete('/deleteuser', [AuthController::class, 'deleteUser']);
+    Route::post('/isactive', [AuthController::class, 'isActive']);
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
 
