@@ -34,6 +34,15 @@ class AuthController extends Controller
         return response()->json(['status' => 'success'])->cookie($cookie);
     }
 
+    public function isAdmin(Request $request)
+    {
+        $user = JWTAuth::parseToken()->authenticate();
+        if ($user && $user->hasRole('admin')) {
+            return response()->json(['isAdmin' => true]);
+        }
+        return response()->json(['isAdmin' => false]);
+    }
+
     // 📝 Register
     public function register(Request $request)
     {

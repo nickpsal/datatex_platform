@@ -19,6 +19,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/refresh', [AuthController::class, 'refresh']);
 
+    //checking if user is admin
+    Route::get('/isadmin', [AuthController::class, 'isAdmin']);
+
     // Categories routes
     Route::post('/createcategory', [CategoriesController::class, 'postCategory']);
     Route::put('/updatecategory/{id}', [CategoriesController::class, 'updateCategory']);

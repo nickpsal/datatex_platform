@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { Router } from '@angular/router';
 import { map, catchError, of } from 'rxjs';
+import { ApiService } from './api';
 
 interface loginPayload {
 	email: string;
@@ -19,38 +20,40 @@ interface LoginResponse {
 	providedIn: 'root'
 })
 export class AuthService {
-	private http = inject(HttpClient);
+	private api = inject(ApiService);
 	private router = inject(Router);
-	private readonly API_URL = environment.apiUrl;
 
 	private userSubject = new BehaviorSubject<any | null>(null);
 	user$ = this.userSubject.asObservable();
 
-	login(payload: loginPayload): Observable<any> {
-		return this.http.post<any>(`${this.API_URL}/login`, payload, {
-			withCredentials: true
-		});
+	get currentUser() {
+		return this.userSubject.value;
 	}
 
-	logout(): Observable<any> {
-		return this.http.post(`${this.API_URL}/logout`, {}, {
-			withCredentials: true
-		}).pipe(
-			tap(() => this.router.navigate(['/login']))
+	login(payload: loginPayload): Observable<any> {
+		return this.api.login(payload).pipe(
+			tap(res => this.userSubject.next(res.user))
 		);
 	}
 
+	logout(): void {
+		this.api.logout().pipe(
+			catchError(() => of(null)),
+			tap(() => {
+				this.userSubject.next(null);
+				this.router.navigate(['/home']);
+			})
+		).subscribe();
+	}
+
 	checkAuth(): Observable<boolean> {
-		return this.http.get<{ user: any }>(`${this.API_URL}/me`, {
-			withCredentials: true
-		}).pipe(
-			tap({
-				next: res => this.userSubject.next(res),
-				error: () => this.router.navigate(['/login'])
-			}),
-			// Επιστρέφει true αν είναι authenticated
+		return this.api.getCurrentUser().pipe(
+			tap(user => this.userSubject.next(user)),
 			map(() => true),
-			catchError(() => of(false))
+			catchError(() => {
+				this.userSubject.next(null);
+				return of(false); // ❗ χωρίς redirect εδώ
+			})
 		);
 	}
 }

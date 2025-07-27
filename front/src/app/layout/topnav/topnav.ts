@@ -32,7 +32,7 @@ export class Topnav implements OnInit {
 	}
 
 	logout() {
-		this.authService.logout().subscribe();
+		this.authService.logout();
 		this.router.navigate(['/home']);
 	}
 }

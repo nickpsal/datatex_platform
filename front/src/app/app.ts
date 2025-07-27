@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
+import { AuthService } from './core/services/auth';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,9 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class App {
   protected readonly title = signal('front');
+  constructor(private auth: AuthService) { }
+
+  ngOnInit(): void {
+    this.auth.checkAuth().subscribe(); // μόνο αυτό αρκεί
+  }
 }
