@@ -30,4 +30,11 @@ export class ApiService {
             withCredentials: true
         });
     }
+
+    isAdmin(): Observable<{ isAdmin: boolean }> {
+        return this.http.get<{ isAdmin: boolean }>(`${this.API_URL}/isadmin`, {
+            withCredentials: true // για cookie-based JWT
+        });
+    }
+
 }

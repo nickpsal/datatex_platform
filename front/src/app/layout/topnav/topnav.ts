@@ -15,12 +15,14 @@ import { MatMenuModule } from '@angular/material/menu';
 })
 export class Topnav implements OnInit {
 	user$: Observable<any> | null = null;
+	isAdmin$: Observable<boolean> | null = null;
 
 	constructor(private theme: ThemeService, private authService: AuthService, private router: Router) { }
 
 	ngOnInit(): void {
-		this.authService.checkAuth().subscribe(); // sets the user if logged in
+		this.authService.checkAuth().subscribe();
 		this.user$ = this.authService.user$;
+		this.isAdmin$ = this.authService.isAdmin();
 	}
 
 	get isDark() {
@@ -33,6 +35,8 @@ export class Topnav implements OnInit {
 
 	logout() {
 		this.authService.logout();
+		this.user$ = null;
+		this.isAdmin$ = null;
 		this.router.navigate(['/home']);
 	}
 }

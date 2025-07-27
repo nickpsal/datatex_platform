@@ -56,4 +56,12 @@ export class AuthService {
 			})
 		);
 	}
+
+	isAdmin(): Observable<boolean> {
+		return this.api.isAdmin().pipe(
+			map(response => response.isAdmin === true),
+			catchError(() => of(false)) // αν αποτύχει (401 ή άλλο), επιστρέφουμε false
+		);
+	}
+
 }

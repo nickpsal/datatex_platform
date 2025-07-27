@@ -5,8 +5,11 @@
 
   <div class="flex items-center space-x-4">
     <a routerLink="/" class="hover:underline">Home</a>
-    <a routerLink="/admin" class="hover:underline">Dashboard</a>
-    
+
+    <ng-container *ngIf="isAdmin$ | async">
+      <a routerLink="/admin" class="hover:underline">Dashboard</a>
+    </ng-container>
+
     <ng-container *ngIf="user$ | async as user; else loginLink">
       <button [matMenuTriggerFor]="userMenu">{{ user.name }}</button>
       <mat-menu #userMenu="matMenu" class="bg-gray-800 text-white mt-4">
