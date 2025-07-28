@@ -12,7 +12,7 @@ import { AuthService } from './core/services/auth/auth';
   styleUrl: './app.scss'
 })
 export class App {
-  protected readonly title = signal('front');
+  protected readonly title = signal('Datatex Platform');
   constructor(private auth: AuthService, private core: CoreService) { }
 
   ngOnInit(): void {

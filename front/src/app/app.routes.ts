@@ -11,9 +11,9 @@ export const routes: Routes = [
     path: '',
     component: LayoutComponent,
     children: [
-      { path: '', component: HomeComponent },
-      { path: 'home', component: HomeComponent },
-      { path: 'admin', component: DashboardComponent, canActivate: [authGuard] }
+      { path: '', component: HomeComponent, title: 'Datatex Platform - Home' },
+      { path: 'home', component: HomeComponent, title: 'Datatex Platform - Home' },
+      { path: 'admin', component: DashboardComponent, canActivate: [authGuard], title: 'Datatex Platform - Admin' }
     ]
   },
   { path: 'login', component: LoginComponent },
