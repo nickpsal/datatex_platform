@@ -1,3 +1,36 @@
-<div class="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-white">
-    <p>home works!</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 mt-6">
+  <mat-card
+    *ngFor="let article of articles$ | async"
+    class="rounded-xl shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out overflow-hidden bg-white dark:bg-gray-800 dark:shadow-black/40"
+  >
+    <img
+      mat-card-image
+      [src]="article.featured_image"
+      [alt]="article.title"
+      class="h-[150px] w-full object-cover"
+    />
+
+    <mat-card-header class="pb-0">
+      <mat-card-title
+        class="text-xl font-semibold text-gray-900 dark:text-white"
+      >
+        📦 {{ article.title }}
+      </mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content
+      class="text-gray-600 dark:text-gray-300"
+      [innerHTML]="article.excerpt"
+    ></mat-card-content>
+
+    <mat-card-actions class="mt-4">
+      <button
+        mat-flat-button
+        color="primary"
+        [routerLink]="['/blog', article.category, article.slug]"
+      >
+        Περισσότερα
+      </button>
+    </mat-card-actions>
+  </mat-card>
 </div>

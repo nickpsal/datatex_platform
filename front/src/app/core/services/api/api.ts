@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { Article } from '../../interfaces/article';
 
 interface LoginPayload {
     email: string;
@@ -37,4 +38,11 @@ export class ApiService {
         });
     }
 
+    getArticles(): Observable<Article[]> {
+        return this.http.get<{ data: Article[] }>(`${this.API_URL}/getarticles`, {
+            withCredentials: true
+        }).pipe(
+            map(response => response.data) 
+        );
+    }
 }
