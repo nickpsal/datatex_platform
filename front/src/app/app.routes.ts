@@ -15,7 +15,7 @@ export const routes: Routes = [
       { path: '', component: HomeComponent, title: 'Datatex Platform - Home' },
       { path: 'home', component: HomeComponent, title: 'Datatex Platform - Home' },
       { path: 'admin', component: DashboardComponent, canActivate: [authGuard], title: 'Datatex Platform - Admin' },
-      { path: 'blog/:category/:slug', component: ArticleDetailsComponent },
+      { path: 'blog/:category/:slug', component: ArticleDetailsComponent , title: 'Datatex Platform - Article Details' },
     ]
   },
   { path: 'login', component: LoginComponent },

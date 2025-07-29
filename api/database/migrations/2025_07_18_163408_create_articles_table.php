@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->string('slug')->unique();
             $table->text('excerpt');
             $table->text('full_content');
-            $table->string('featured_image');
+            $table->text('featured_image');
             $table->enum('status', ['draft', 'published', 'unpublished'])->default('draft');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->unsignedBigInteger('user_id');
