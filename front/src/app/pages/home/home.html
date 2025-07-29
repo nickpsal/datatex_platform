@@ -1,3 +1,10 @@
+<img
+  mat-card-image
+  src="http://localhost/datatex_platform/api/public/assets/images/slider.jpg"
+  alt="slider image"
+  class="w-full h-[600px] object-cover"
+/>
+
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 mt-6">
   <mat-card
     *ngFor="let article of articles$ | async"
@@ -7,14 +14,19 @@
       mat-card-image
       [src]="article.featured_image"
       [alt]="article.title"
-      class="h-[300px] w-full object-cover"
+      class="h-[450px] w-full object-cover"
     />
 
     <mat-card-header class="pb-0">
       <mat-card-title
         class="text-xl font-semibold text-gray-900 dark:text-white"
       >
-        📦 {{ article.title }}
+        <a
+          [routerLink]="['/blog', article.category, article.slug]"
+          class="hover:underline text-inherit no-underline"
+        >
+          {{ article.title }}
+        </a>
       </mat-card-title>
     </mat-card-header>
 
@@ -22,15 +34,5 @@
       class="text-gray-600 dark:text-gray-300"
       [innerHTML]="article.excerpt"
     ></mat-card-content>
-
-    <mat-card-actions class="mt-4">
-      <button
-        mat-flat-button
-        color="primary"
-        [routerLink]="['/blog', article.category, article.slug]"
-      >
-        Περισσότερα
-      </button>
-    </mat-card-actions>
   </mat-card>
 </div>

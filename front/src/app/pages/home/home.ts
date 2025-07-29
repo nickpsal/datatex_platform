@@ -25,7 +25,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.articles$ = this.api.getArticles();
-    console.log('Articles fetched:', this.articles$);
+    console.log('Articles fetched:', this.api.getArticles());
   }
 }
   
