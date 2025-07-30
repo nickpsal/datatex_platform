@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/internal/Observable";
 
 @Injectable({
     providedIn: 'root'
@@ -19,4 +20,4 @@ export class CoreService {
         const found = cookies.find(c => c.startsWith(`${name}=`));
         return found ? found.split('=')[1] : null;
     }
-}   
+}

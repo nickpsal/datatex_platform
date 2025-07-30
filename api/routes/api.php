@@ -10,7 +10,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::get('/getarticles', [ArticlesController::class, 'getAllArticles']);
 Route::get('/getarticlesbycategory', [ArticlesController::class, 'getAllArticlesByCategory']);
-Route::get('/getarticle/{id}', [ArticlesController::class, 'getArticleById']);
+Route::get('/getarticle/{slug}', [ArticlesController::class, 'getArticleBySlug']);
 
 Route::get('/getcategories', [CategoriesController::class, 'getAllCategories']);
 

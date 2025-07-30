@@ -7,5 +7,5 @@ export interface Article {
     category: string;
     featured_image: string;
     author: string;
-    publishedDate: Date;
+    created_at: Date;
 }

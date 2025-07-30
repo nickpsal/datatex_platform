@@ -45,4 +45,14 @@ export class ApiService {
             map(response => response.data) 
         );
     }
+
+    getArticleBySlug(slug: string): Observable<Article> {
+        return this.http.get<Article>(`${this.API_URL}/getarticle/${slug}`, {
+            withCredentials: true
+        }).pipe(
+            map(response => {
+                return response;
+            })
+        );
+    }
 }
