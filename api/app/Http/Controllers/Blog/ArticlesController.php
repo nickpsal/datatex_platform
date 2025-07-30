@@ -35,7 +35,7 @@ class ArticlesController extends Controller
                 'featured_image' => $article->featured_image,
                 'slug' => $article->slug,
                 'category_id' => $article->category_id,
-                'category' => $article->category ? $article->category->Slug : null,
+                'category' => $article->category ? $article->category->slug : null,
             ];
         });
 
@@ -74,15 +74,30 @@ class ArticlesController extends Controller
         ], 200, ['Content-Type' => 'application/json']);
     }
 
-    public function getArticleById($id)
+    public function getArticleBySlug($slug)
     {
-        $article = Article::find($id);
+        $article = Article::with(['category', 'user'])
+            ->where('slug', $slug)
+            ->first();
 
         if (!$article) {
             return response()->json(['error' => 'Article not found'], 404, ['Content-Type' => 'application/json']);
         }
 
-        return response()->json($article, 200, ['Content-Type' => 'application/json']);
+        $data = [
+            'id' => $article->id,
+            'title' => $article->title,
+            'excerpt' => $article->excerpt,
+            'full_content' => $article->full_content,
+            'featured_image' => $article->featured_image,
+            'slug' => $article->slug,
+            'category_id' => $article->category_id,
+            'category' => $article->category?->name,
+            'author' => $article->user?->name,
+            'created_at' => $article->created_at->format('Y-m-d H:i:s'),
+        ];
+
+        return response()->json($data, 200, ['Content-Type' => 'application/json']);
     }
 
     public function postArticle(Request $request)

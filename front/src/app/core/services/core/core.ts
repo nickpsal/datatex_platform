@@ -1,14 +1,10 @@
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/internal/Observable";
 
 @Injectable({
     providedIn: 'root'
 })
 export class CoreService {
-
-    hasJwtCookie(): boolean {
-        return this.getCookie('token') !== null ? true : false;
-    }
-
     hasThemeCookie(): string | null {
         const match = document.cookie.match(/darkMode=([^;]+)/);
         return match ? match[1] : null;
@@ -24,4 +20,4 @@ export class CoreService {
         const found = cookies.find(c => c.startsWith(`${name}=`));
         return found ? found.split('=')[1] : null;
     }
-}   
+}

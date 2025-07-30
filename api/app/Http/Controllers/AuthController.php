@@ -25,10 +25,10 @@ class AuthController extends Controller
             60,              // Διάρκεια σε λεπτά
             '/',             // Path
             null,            // Domain (ή '.datatex.gr' σε deployment)
-            false,           // Secure (true μόνο για HTTPS)
-            false,           // HttpOnly
+            true,           // Secure (true μόνο για HTTPS)
+            true,            // HttpOnly
             false,           // Raw
-            'Lax'            // SameSite: 'Lax' ή 'Strict'
+            'Strict'         // SameSite: 'Lax' ή 'Strict'
         );
 
         return response()->json(['status' => 'success'])->cookie($cookie);

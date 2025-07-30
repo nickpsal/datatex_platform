@@ -16,8 +16,6 @@ export class App {
   constructor(private auth: AuthService, private core: CoreService) { }
 
   ngOnInit(): void {
-    if (this.core.hasJwtCookie()) {
-      this.auth.checkAuth().subscribe();
-    }
+    this.auth.checkAuth().subscribe();
   }
 }
