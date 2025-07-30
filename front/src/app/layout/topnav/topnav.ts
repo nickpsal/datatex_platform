@@ -21,13 +21,11 @@ export class Topnav implements OnInit {
 	constructor(private theme: ThemeService, private authService: AuthService, private router: Router, private core: CoreService) { }
 
 	ngOnInit(): void {
-		this.authService.checkAuth().subscribe((isAuth) => {
-			if (isAuth) {
-				this.isAdmin$ = this.authService.isAdmin();
-				this.user$ = this.authService.user$;
-			}
-		});
+		this.user$ = this.authService.user$;
+		this.isAdmin$ = this.authService.isAdmin();
+		this.authService.checkAuth().subscribe(); // μόνο για trigger
 	}
+
 
 	get isDark() {
 		return this.theme.isDarkMode();
