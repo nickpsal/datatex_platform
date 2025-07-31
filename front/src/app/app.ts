@@ -12,10 +12,13 @@ import { AuthService } from './core/services/auth/auth';
   styleUrl: './app.scss'
 })
 export class App {
+  isReady = signal(false);
   protected readonly title = signal('Datatex Platform');
   constructor(private auth: AuthService, private core: CoreService) { }
 
   ngOnInit(): void {
-    this.auth.checkAuth().subscribe();
+    this.auth.checkAuth().subscribe(() => {
+      this.isReady.set(true);
+    });
   }
 }
