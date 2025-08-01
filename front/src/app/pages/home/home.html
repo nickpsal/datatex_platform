@@ -1,11 +1,15 @@
 <img
   mat-card-image
-  src="http://localhost/datatex_platform/api/public/assets/images/slider.jpg"
+  src="https://api.datatex.gr/public/assets/images/slider.jpg"
   alt="slider image"
   class="w-full h-[600px] object-cover"
 />
 
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 mt-6">
+<div class="w-full flex justify-center py-20" *ngIf="isLoading()">
+  <mat-spinner diameter="60" strokeWidth="5" color="primary"></mat-spinner>
+</div>
+
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 mt-6" *ngIf="!isLoading()">
   <mat-card
     *ngFor="let article of articles$ | async"
     class="rounded-xl shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out overflow-hidden bg-white dark:bg-gray-800 dark:shadow-black/40"
