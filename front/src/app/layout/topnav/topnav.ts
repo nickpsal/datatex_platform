@@ -26,7 +26,6 @@ export class Topnav implements OnInit {
 		this.authService.checkAuth().subscribe(); // μόνο για trigger
 	}
 
-
 	get isDark() {
 		return this.theme.isDarkMode();
 	}
