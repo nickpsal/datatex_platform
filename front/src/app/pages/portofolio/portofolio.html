@@ -4,42 +4,46 @@
   <p class="text-4xl font-bold text-center mb-10 text-gray-800 dark:text-white">Ιστιοσελίδες που έχουν δημιουργηθεί από εμάς</p>
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full gap-8">
-    <div
-      *ngFor="let project of portofolioList$ | async"
-      class="flex flex-col bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl hover:ring-2 hover:ring-blue-500"
-    >
-      <!-- Εικόνα -->
-      <div class="aspect-[16/9] overflow-hidden relative rounded-t-lg">
-        <img
-          [src]="project.image_url"
-          [alt]="project.title"
-          class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-        />
-      </div>
-
-      <!-- Περιεχόμενο -->
-      <div class="p-4 flex flex-col flex-grow">
-        <h2 class="text-lg font-bold mb-1 text-gray-900 dark:text-white">{{ project.title }}</h2>
-        <p class="text-sm text-gray-600 dark:text-gray-300 flex-grow">{{ project.description }}</p>
-
-        <div *ngIf="project.technologies?.length" class="my-3 flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-300">
-          <span *ngFor="let tech of project.technologies" class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
-            #{{ tech }}
-          </span>
+    @for (project of portofolioList$ | async; track project) {
+      <div
+        class="flex flex-col bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-md transition-transform duration-300 hover:scale-[1.02] hover:shadow-xl hover:ring-2 hover:ring-blue-500"
+      >
+        <!-- Εικόνα -->
+        <div class="aspect-[16/9] overflow-hidden relative rounded-t-lg">
+          <img
+            [src]="project.image_url"
+            [alt]="project.title"
+            class="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+          />
         </div>
-
-        <div class="mt-auto flex justify-between items-center text-sm text-gray-400 dark:text-gray-300">
-          <span>{{ project.year }}</span>
-          <a
-            *ngIf="project.link_url"
-            [href]="project.link_url"
-            target="_blank"
-            class="text-blue-600 font-medium hover:underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition"
-          >
-            Visit Site
-          </a>
+  
+        <!-- Περιεχόμενο -->
+        <div class="p-4 flex flex-col flex-grow">
+          <h2 class="text-lg font-bold mb-1 text-gray-900 dark:text-white">{{ project.title }}</h2>
+          <p class="text-sm text-gray-600 dark:text-gray-300 flex-grow">{{ project.description }}</p>
+  
+          @if (project.technologies?.length) {
+            <div class="my-3 flex flex-wrap gap-2 text-xs text-gray-500 dark:text-gray-300">
+              <span *ngFor="let tech of project.technologies" class="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full">
+                #{{ tech }}
+              </span>
+            </div>
+          }
+  
+          <div class="mt-auto flex justify-between items-center text-sm text-gray-400 dark:text-gray-300">
+            <span>{{ project.year }}</span>
+            @if (project.link_url) {
+              <a
+                [href]="project.link_url"
+                target="_blank"
+                class="text-blue-600 font-medium hover:underline hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition"
+              >
+                Visit Site
+              </a>
+            }
+          </div>
         </div>
       </div>
-    </div>
+    }
   </div>
 </section>
