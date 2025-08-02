@@ -2,30 +2,28 @@
   class="w-full bg-gray-700 text-white p-4 flex justify-between items-center dark:bg-black"
 >
   <div class="font-bold">
-    <a routerLink="/home" class="hover:underline">Datatex Platform</a>
+    <a routerLink="/home" class="hover:underline">Datatex.gr</a>
   </div>
 
   <div class="flex items-center space-x-4">
-    <a routerLink="/" class="hover:underline">Home</a>
+    <a routerLink="/" class="hover:underline">Κεντρική</a>
 
     <a routerLink="/portofolio" class="hover:underline">Portofolio</a>
 
-    <ng-container *ngIf="isAdmin$ | async">
-      <a routerLink="/admin" class="hover:underline">Dashboard</a>
-    </ng-container>
+    <a routerLink="/bio" class="hover:underline">Ποιοι Είμαστε</a>
 
-    <ng-container *ngIf="user$ | async as user; else loginLink">
+    @if (isAdmin$ | async) {
+    <a routerLink="/admin" class="hover:underline">Dashboard</a>
+    } 
+    
+    @if (user$ | async; as user) {
       <button [matMenuTriggerFor]="userMenu">{{ user.name }}</button>
       <mat-menu #userMenu="matMenu" class="bg-gray-800 text-white mt-4">
         <button mat-menu-item routerLink="/profile">Profile</button>
         <button mat-menu-item routerLink="/settings">Settings</button>
         <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
-    </ng-container>
-
-    <ng-template #loginLink>
-      <!-- <a routerLink="/login" class="hover:underline">Login</a> -->
-    </ng-template>
+    }
 
     <a
       href="https://github.com/nickpsal"
