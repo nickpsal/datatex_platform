@@ -1,10 +1,14 @@
 <nav
   class="w-full bg-gray-700 text-white p-4 flex justify-between items-center dark:bg-black"
 >
-  <div class="font-bold"><a routerLink="/home" class="hover:underline">Datatex Platform</a></div>
+  <div class="font-bold">
+    <a routerLink="/home" class="hover:underline">Datatex Platform</a>
+  </div>
 
   <div class="flex items-center space-x-4">
     <a routerLink="/" class="hover:underline">Home</a>
+
+    <a routerLink="/portofolio" class="hover:underline">Portofolio</a>
 
     <ng-container *ngIf="isAdmin$ | async">
       <a routerLink="/admin" class="hover:underline">Dashboard</a>
@@ -20,8 +24,17 @@
     </ng-container>
 
     <ng-template #loginLink>
-      <a routerLink="/login" class="hover:underline">Login</a>
+      <!-- <a routerLink="/login" class="hover:underline">Login</a> -->
     </ng-template>
+
+    <a
+      href="https://github.com/nickpsal"
+      target="_blank"
+      class="hover:text-gray-300 text-xl"
+      title="View on GitHub"
+    >
+      <i class="fab fa-github"></i>
+    </a>
 
     <button (click)="toggleDarkMode()" class="ml-4 text-xl">
       {{ isDark ? "☀️" : "🌙" }}

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Blog\ArticlesController;
 use App\Http\Controllers\Blog\CategoriesController;
+use App\Http\Controllers\Portofolio\PortofolioController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -13,6 +14,8 @@ Route::get('/getarticlesbycategory', [ArticlesController::class, 'getAllArticles
 Route::get('/getarticle/{slug}', [ArticlesController::class, 'getArticleBySlug']);
 
 Route::get('/getcategories', [CategoriesController::class, 'getAllCategories']);
+
+Route::get('/getportofolio', [PortofolioController::class, 'getPortofolio']);
 
 Route::middleware('auth:api')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);

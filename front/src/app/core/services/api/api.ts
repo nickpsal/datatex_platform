@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { map, Observable } from 'rxjs';
 import { Article } from '../../interfaces/article';
+import { Portofolio } from '../../interfaces/portofolio';
 
 interface LoginPayload {
     email: string;
@@ -36,6 +37,14 @@ export class ApiService {
         return this.http.get<{ isAdmin: boolean }>(`${this.API_URL}/isadmin`, {
             withCredentials: true // για cookie-based JWT
         });
+    }
+
+    getPortoflio(): Observable<Portofolio[]> {
+        return this.http.get<{ data: Portofolio[] }>(`${this.API_URL}/getportofolio`, {
+            withCredentials: true
+        }).pipe(
+            map(response => response.data) // Επιστρέφει μόνο τα δεδομένα του portofolio
+        );
     }
 
     getArticles(): Observable<Article[]> {
