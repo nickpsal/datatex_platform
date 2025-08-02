@@ -12,8 +12,11 @@
       (click)="toggleSidebar()"
       class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
     >
-      <span *ngIf="!isToggled()">☰</span>
-      <span *ngIf="isToggled()">✕</span>
+      @if (!isToggled()) {
+        <span>☰</span>
+      }else {
+        <span>✕</span>
+      }
     </button>
 
     <!-- Title -->
