@@ -11,12 +11,10 @@
   <mat-spinner diameter="60" strokeWidth="5" color="primary"></mat-spinner>
 </div>
 
-<div
-  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 mt-6"
-  *ngIf="!isLoading()"
->
+@if(!isLoading()) {
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 mt-6">
+  @for (article of articles$ | async; track article) {
   <mat-card
-    *ngFor="let article of articles$ | async trackBy: trackByFn"
     class="rounded-xl shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out overflow-hidden bg-white dark:bg-gray-800 dark:shadow-black/40"
   >
     <img
@@ -47,4 +45,6 @@
       [innerHTML]="safeExcerpt(article.excerpt)"
     ></mat-card-content>
   </mat-card>
+  }
 </div>
+}
