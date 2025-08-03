@@ -2,6 +2,8 @@
   mat-card-image
   src="https://api.datatex.gr/public/assets/images/slider.jpg"
   alt="slider image"
+  width="1600"
+  height="600"
   class="w-full h-[600px] object-cover"
 />
 
@@ -9,15 +11,21 @@
   <mat-spinner diameter="60" strokeWidth="5" color="primary"></mat-spinner>
 </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 mt-6" *ngIf="!isLoading()">
+<div
+  class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6 mt-6"
+  *ngIf="!isLoading()"
+>
   <mat-card
-    *ngFor="let article of articles$ | async"
+    *ngFor="let article of articles$ | async trackBy: trackByFn"
     class="rounded-xl shadow-lg transition-transform transform hover:scale-105 duration-300 ease-in-out overflow-hidden bg-white dark:bg-gray-800 dark:shadow-black/40"
   >
     <img
       mat-card-image
       [src]="article.featured_image"
       [alt]="article.title"
+      loading="lazy"
+      width="600"
+      height="450"
       class="h-[450px] w-full object-cover"
     />
 
@@ -36,7 +44,7 @@
 
     <mat-card-content
       class="text-gray-600 dark:text-gray-300"
-      [innerHTML]="article.excerpt"
+      [innerHTML]="safeExcerpt(article.excerpt)"
     ></mat-card-content>
   </mat-card>
 </div>
