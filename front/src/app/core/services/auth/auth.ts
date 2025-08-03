@@ -45,18 +45,20 @@ export class AuthService {
 	}
 
 	checkAuth(): Observable<boolean> {
-		if (this.isLoggedIn()) {
-			return this.api.getCurrentUser().pipe(
-				tap(user => this.userSubject.next(user)),
-				map(() => true),
-				catchError(() => {
-					this.userSubject.next(null);
-					return of(false);
-				})
-			);
-		}
-		return of(false);
+		return this.api.getCurrentUser().pipe(
+			tap(user => {
+				this.userSubject.next(user);
+				this.isLoggedIn.set(true); // trigger again το signal
+			}),
+			map(() => true),
+			catchError(() => {
+				this.userSubject.next(null);
+				this.isLoggedIn.set(false); // προαιρετικό
+				return of(false);
+			})
+		);
 	}
+
 
 	isAdmin(): Observable<boolean> {
 		if (this.isLoggedIn()) {
