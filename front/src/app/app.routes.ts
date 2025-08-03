@@ -8,6 +8,7 @@ import { LayoutComponent } from './layout/layout/layout';
 import { ArticleDetailsComponent } from './pages/article-details/article-details';
 import { PortofolioComponent } from './pages/portofolio/portofolio';
 import { BioComponent } from './pages/bio/bio';
+import { UserProfileComponent } from './pages/user-profile/user-profile';
 
 export const routes: Routes = [
   {
@@ -19,7 +20,8 @@ export const routes: Routes = [
       { path: 'admin', component: DashboardComponent, canActivate: [authGuard], title: 'Datatex Platform - Admin' },
       { path: 'blog/:category/:slug', component: ArticleDetailsComponent , title: 'Datatex Platform - Article Details' },
       { path: 'portofolio', component: PortofolioComponent, title: 'Datatex Platform - Portfolio' },
-      { path: 'bio', component: BioComponent, title: 'Datatex Platform - Bio' }
+      { path: 'bio', component: BioComponent, title: 'Datatex Platform - Bio' },
+      { path: 'user-profile', component: UserProfileComponent, title: 'Datatex Platform - User Profile' }
     ]
   },
   { path: 'login', component: LoginComponent },

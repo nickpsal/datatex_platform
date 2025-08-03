@@ -19,8 +19,7 @@
     @if (user$ | async; as user) {
       <button [matMenuTriggerFor]="userMenu">{{ user.name }}</button>
       <mat-menu #userMenu="matMenu" class="bg-gray-800 text-white mt-4">
-        <button mat-menu-item routerLink="/profile">Profile</button>
-        <button mat-menu-item routerLink="/settings">Settings</button>
+        <button mat-menu-item routerLink="/user-profile">Profile</button>
         <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
     }
