@@ -7,6 +7,7 @@ import { authGuard } from './core/guards/auth.guard';
 import { LayoutComponent } from './layout/layout/layout';
 import { ArticleDetailsComponent } from './pages/article-details/article-details';
 import { PortofolioComponent } from './pages/portofolio/portofolio';
+import { BioComponent } from './pages/bio/bio';
 
 export const routes: Routes = [
   {
@@ -17,7 +18,8 @@ export const routes: Routes = [
       { path: 'home', component: HomeComponent, title: 'Datatex Platform - Home' },
       { path: 'admin', component: DashboardComponent, canActivate: [authGuard], title: 'Datatex Platform - Admin' },
       { path: 'blog/:category/:slug', component: ArticleDetailsComponent , title: 'Datatex Platform - Article Details' },
-      { path: 'portofolio', component: PortofolioComponent, title: 'Datatex Platform - Portfolio' }
+      { path: 'portofolio', component: PortofolioComponent, title: 'Datatex Platform - Portfolio' },
+      { path: 'bio', component: BioComponent, title: 'Datatex Platform - Bio' }
     ]
   },
   { path: 'login', component: LoginComponent },

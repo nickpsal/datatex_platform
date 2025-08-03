@@ -1,0 +1,119 @@
+<div
+  class="mx-auto p-6 bg-white shadow rounded-lg bg-white dark:bg-gray-900 transition-colors duration-300 font-medium"
+>
+  <!-- Προσωπικά Στοιχεία -->
+  <section class="text-center mb-8">
+    <img
+      src="https://api.datatex.gr/public/assets/images/nickpsal.jpg"
+      class="w-[300px] h-[300px] rounded-full mx-auto mb-4"
+      alt="Profile Image"
+    />
+    <h1 class="text-3xl font-bold">{{ fullname() }}</h1>
+    <p>{{ title() }}</p>
+    <p>📧 {{ email() }}| 📍 Αθήνα, Ελλάδα</p>
+  </section>
+
+  <!-- Foreign Languages -->
+  <section class="mb-6">
+    <h2 class="text-xl font-semibold border-b pb-2 mb-2">🌍 Γλώσσες</h2>
+    <ul class="list-disc list-inside">
+      <li>Ελληνικά: Μητρική Γλώσσα</li>
+      <li>Αγγλικά: Άριστη Γνώση</li>
+    </ul>
+  </section>
+
+  <!-- Δεξιότητες -->
+  <section class="mb-8">
+    <h2 class="text-xl font-semibold border-b pb-2 mb-2">💼 Δεξιότητες</h2>
+    <ul class="list-disc list-inside grid grid-cols-4 gap-x-6">
+      <li>CodeIgniter 3</li>
+      <li>Laravel 11</li>
+      <li>Angular 19</li>
+      <li>MySQL</li>
+      <li>PHP 8.4</li>
+      <li>JavaScript</li>
+      <li>RESTful APIs SANCTUM & JWT</li>
+      <li>Joomla</li>
+      <li>WordPress</li>
+      <li>IT Support</li>
+    </ul>
+  </section>
+
+  <!-- Εμπειρία -->
+  <h2 class="text-xl font-semibold border-b pb-2 mb-2">
+    👨‍💻 Επαγγελματική Εμπειρία
+  </h2>
+  <section
+    class="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 h-full gap-8"
+  >
+    <div class="mb-4">
+      <h3 class="font-bold underline">
+        Full Stack Developer – Brainfood Media
+      </h3>
+      <p>2024 – Σήμερα</p>
+      <p>Αναπτυξη Πλατφόρμας Digital Advertising με χρήση CodeIgniter 3.</p>
+      <p>Αναπτυξη RESTful APIs για επικοινωνία με εξωτερικές υπηρεσίες.</p>
+      <p>
+        Αναπτυξη Πλατφόρμας διαχείρισης Περιεχομένου με χρήση Laravel 11 και
+        Angular 19.
+      </p>
+      <p>
+        Δημιουργία και συντήρηση plugins για Joomla και WordPress με χρήση JWT
+        για ασφαλή αυθεντικοποίηση.
+      </p>
+      <p>Σχεδίαση και υλοποίηση βάσεων δεδομένων με MySQL.</p>
+    </div>
+    <div class="mb-4">
+      <h3 class="font-bold underline">Τηλεφωνική Υποστήριξη - Nova - Wind</h3>
+      <p>2021 – 2023</p>
+      <p>
+        Παροχή τεχνικής υποστήριξης σε οικιακούς αλλα και επαγγελματικούς
+        πελάτες μέσω τηλεφώνου.
+      </p>
+      <p>
+        Διάγνωση και επίλυση προβλημάτων Τηλεφωνίας - Ιντερνετ και Δορυφορικης
+        Τηλεόρασης.
+      </p>
+    </div>
+    <div class="mb-4">
+      <h3 class="font-bold underline">
+        Freelance Τεχνικός Υπολογιστών και Δικτύων
+      </h3>
+      <p>2008 – Σήμερα</p>
+      <p>Παροχή υπηρεσιών επισκευής και συντήρησης υπολογιστών και δικτύων.</p>
+      <p>Εγκατάσταση και ρύθμιση δικτυακών συσκευών (routers, switches).</p>
+      <p>Διάγνωση και επίλυση προβλημάτων λογισμικού και υλικού.</p>
+      <p>Παροχή συμβουλών για την αναβάθμιση και βελτιστοποίηση συστημάτων.</p>
+    </div>
+  </section>
+
+  <!-- Σπουδές -->
+  <h2 class="text-xl font-semibold border-b pb-2 mb-2">🎓 Εκπαίδευση</h2>
+  <section
+    class="mb-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 h-full gap-8"
+  >
+    <p class="mb-4">
+      <span>Μεταπτυχιακό – Πανεπιστήμιο Δυτικής Αττικής</span><br />
+      <span class="underline"
+        >Θέμα: Τεχνητή Νοημοσύνη και Οπτικη Υπολογιστικη</span
+      ><br />
+      <span>2024 – 2025</span> <br />
+    </p>
+    <p class="mb-4">
+      <span>Πτυχίο – Ελληνικο Ανοιχτό Πανεπιστήμιο ΕΑΠ</span><br />
+      <span class="underline">Τμήμα: Πληροφορικής</span><br />
+      <span>2011 – 2023</span> <br />
+    </p>
+    <p class="mb-4">
+      <span>ΙΕΚ Ακμή</span><br />
+      <span class="underline">Τμήμα: Τεχνικός Τεχνολογίας Ιντερνετ</span><br />
+      <span>2008 – 2009</span><br />
+    </p>
+    <p class="mb-4">
+      <span>ΙΕΚ Κορέλκο</span><br />
+      <span class="underline">Τμήμα: Τεχνικός Υπολογιστών και Δικτύων</span
+      ><br />
+      <span>2006 – 2008</span> <br />
+    </p>
+  </section>
+</div>
