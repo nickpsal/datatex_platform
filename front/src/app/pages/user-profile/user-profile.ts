@@ -4,6 +4,8 @@ import { CommonModule, DatePipe } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../core/services/auth/auth';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ApiService } from '../../core/services/api/api';
 
 @Component({
   selector: 'app-user-profile',
@@ -18,25 +20,20 @@ import { Router } from '@angular/router';
 export class UserProfileComponent implements OnInit {
   userProfileForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(private fb: FormBuilder, private apiService: ApiService, private router: Router) {
       this.userProfileForm = this.fb.group({
         name: ['', [Validators.required]],
         email: ['', [Validators.required, Validators.email]],
         password: ['', [Validators.required, Validators.minLength(6)]],
+        confirm_password: ['', [Validators.required, Validators.minLength(6)]],
         avatar_url: ['', [Validators.required]],
-        isActive: [true]
       });
   }
   
   ngOnInit(): void {
-    this.userProfileForm.patchValue(this.user);
-  }
-
-  user: User = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    password: 'securepassword',
-    avatar_url: 'https://api.datatex.gr/public/assets/images/nickpsal.jpg',
-    isActive: true
+    this.apiService.getCurrentUser().subscribe(user => {
+      this.userProfileForm.patchValue(user);
+      console
+    });
   }
 }
