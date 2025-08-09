@@ -9,19 +9,21 @@ import { ArticleDetailsComponent } from './pages/article-details/article-details
 import { PortofolioComponent } from './pages/portofolio/portofolio';
 import { BioComponent } from './pages/bio/bio';
 import { UserProfileComponent } from './pages/user-profile/user-profile';
+import { ArticlesTable } from './tables/articles-table/articles-table';
 
 export const routes: Routes = [
   {
     path: '',
     component: LayoutComponent,
     children: [
-      { path: '', component: HomeComponent, title: 'Datatex Platform - Home' },
-      { path: 'home', component: HomeComponent, title: 'Datatex Platform - Home' },
-      { path: 'admin', component: DashboardComponent, canActivate: [authGuard], title: 'Datatex Platform - Admin' },
-      { path: 'blog/:category/:slug', component: ArticleDetailsComponent , title: 'Datatex Platform - Article Details' },
-      { path: 'portofolio', component: PortofolioComponent, title: 'Datatex Platform - Portfolio' },
-      { path: 'bio', component: BioComponent, title: 'Datatex Platform - Bio' },
-      { path: 'user-profile', component: UserProfileComponent, title: 'Datatex Platform - User Profile' }
+      { path: '', component: HomeComponent, title: 'Datatex.gr - Home' },
+      { path: 'home', component: HomeComponent, title: 'Datatex.gr - Home' },
+      { path: 'blog/:category/:slug', component: ArticleDetailsComponent , title: 'Datatex.gr - Article Details' },
+      { path: 'portofolio', component: PortofolioComponent, title: 'Datatex.gr - Portfolio' },
+      { path: 'bio', component: BioComponent, title: 'Datatex.gr - Bio' },
+      { path: 'user-profile', component: UserProfileComponent, title: 'Datatex.gr - User Profile' },
+      { path: 'admin', component: DashboardComponent, canActivate: [authGuard], title: 'Datatex.gr - Admin' },
+      { path: 'admin/articles', component: ArticlesTable, canActivate: [authGuard], title: 'Datatex.gr - Admin - Articles'}
     ]
   },
   { path: 'login', component: LoginComponent },

@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { map, Observable } from 'rxjs';
 import { Article } from '../../interfaces/article';
@@ -47,13 +47,16 @@ export class ApiService {
         );
     }
 
-    getArticles(): Observable<Article[]> {
-        return this.http.get<{ data: Article[] }>(`${this.API_URL}/getarticles`, {
-            withCredentials: true
-        }).pipe(
-            map(response => response.data) 
+    getArticles(params: any = {}): Observable<{ data: Article[]; total: number; limit: number; offset: number }> {
+        return this.http.get<{ data: Article[]; total: number; limit: number; offset: number }>(
+            `${this.API_URL}/getarticles`,
+            {
+                withCredentials: true,
+                params: new HttpParams({ fromObject: params })
+            }
         );
     }
+
 
     getArticleBySlug(slug: string): Observable<Article> {
         return this.http.get<Article>(`${this.API_URL}/getarticle/${slug}`, {

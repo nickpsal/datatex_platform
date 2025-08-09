@@ -15,6 +15,8 @@ class ArticlesController extends Controller
     {
         $offset = (int) $request->get('offset', 0);
         $limit = (int) $request->get('limit', 5);
+        $sort_by = $request->get('sort_by', 'id');
+        $sort_order = $request->get('sort_order', 'desc');
 
         $query = Article::query();
 
@@ -22,7 +24,7 @@ class ArticlesController extends Controller
 
         $articles = $query->where('status', 'published')
             ->with('category')
-            ->orderBy('id', 'desc')
+            ->orderBy($sort_by, $sort_order)
             ->skip($offset)
             ->take($limit)
             ->get();
@@ -35,7 +37,10 @@ class ArticlesController extends Controller
                 'featured_image' => $article->featured_image,
                 'slug' => $article->slug,
                 'category_id' => $article->category_id,
-                'category' => $article->category ? $article->category->slug : null,
+                'category' => $article->category ? $article->category->name : null,
+                'author' => $article->user ? $article->user->name : null,
+                'created_at' => $article->created_at->format('Y-m-d'),
+                'updated_at' =>  $article->updated_at !== null ? $article->updated_at->format('Y-m-d') : null,
             ];
         });
 
@@ -52,6 +57,8 @@ class ArticlesController extends Controller
     {
         $offset = (int) $request->get('offset', 0);
         $limit = (int) $request->get('limit', 5);
+        $sort_by = $request->get('sort_by', 'id');
+        $sort_order = $request->get('sort_order', 'desc'); 
         $categoryId = (int) $request->get('category_id');
 
         if (!$categoryId) {
@@ -64,6 +71,7 @@ class ArticlesController extends Controller
         $articles = $query->orderBy('id', 'desc')
             ->skip($offset)
             ->take($limit)
+            ->orderBy($sort_by, $sort_order)
             ->get();
 
         return response()->json([

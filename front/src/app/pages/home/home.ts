@@ -15,30 +15,41 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
   imports: [
     MatCardModule,
     RouterModule,
-    AsyncPipe,
     MatProgressSpinnerModule
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.scss']
 })
 export class HomeComponent implements OnInit {
+  // server-side conditions
+  limit = signal(10);
+  offset = signal(0);
+  sort_by = signal<string>('created_at');
+  sort_order = signal<'asc' | 'desc'>('desc');
   isLoading = signal(true);
 
   public safeExcerpt: (html: string) => SafeHtml;
 
-  articles$: Observable<Article[]> | null = null;
+  articles: Article[] = [];
 
   trackByFn(index: number, article: Article): number {
     return article.id;
   }
 
-  constructor(private api: ApiService, private sanitizer: DomSanitizer) {
+  constructor(private apiService: ApiService, private sanitizer: DomSanitizer) {
     this.safeExcerpt = (html: string) => this.sanitizer.bypassSecurityTrustHtml(html);
   }
 
   ngOnInit() {
-    this.articles$ = this.api.getArticles();
-    this.articles$.subscribe(() => this.isLoading.set(false));
+    this.apiService.getArticles({
+      limit: this.limit(),
+      offset: this.offset(),
+      sort_by: this.sort_by(),
+      sort_order: this.sort_order()
+    }).subscribe(res => {
+      this.articles = res.data;
+      this.isLoading.set(false);
+    });
   }
 
 }

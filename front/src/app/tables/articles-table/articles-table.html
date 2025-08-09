@@ -1,0 +1,100 @@
+<app-sidebar></app-sidebar>
+
+<main
+  [class.ml-64]="isToggled()"
+  [class.ml-4]="!isToggled()"
+  class="transition-all duration-300 p-6 min-h-screen bg-white dark:bg-gray-800 dark:shadow-black/40"
+>
+  <!-- Flex container for button + title -->
+  <div class="flex items-center space-x-4 mb-4">
+    <!-- Toggle Button -->
+    <button
+      (click)="toggleSidebar()"
+      class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
+    >
+      @if (!isToggled()) {
+      <span>☰</span>
+      }@else {
+      <span>✕</span>
+      }
+    </button>
+
+    <!-- Title -->
+    <h1 class="text-3xl font-semibold">Datatex Dashboard - Articles</h1>
+  </div>
+  <div>
+    <table
+      mat-table
+      [dataSource]="data"
+      matSort
+      (matSortChange)="onSort($event)"
+      [matSortActive]="sort_by()"
+      [matSortDirection]="sort_order()"
+      [matSortDisableClear]="true"
+      class="w-full"
+    >
+      <!-- ID -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="id">ID</th>
+        <td mat-cell *matCellDef="let r">{{ r.id }}</td>
+      </ng-container>
+
+      <!-- Title -->
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="title">Title</th>
+        <td mat-cell *matCellDef="let r">
+          <div class="font-medium">{{ r.title }}</div>
+        </td>
+      </ng-container>
+
+      <!-- Category -->
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Category</th>
+        <td mat-cell *matCellDef="let r">{{ r.category || "—" }}</td>
+      </ng-container>
+
+      <!-- Author -->
+      <ng-container matColumnDef="author">
+        <th mat-header-cell *matHeaderCellDef>Author</th>
+        <td mat-cell *matCellDef="let r">{{ r.author || "—" }}</td>
+      </ng-container>
+
+      <!-- Created -->
+      <ng-container matColumnDef="created_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="created_at">
+          Created
+        </th>
+        <td mat-cell *matCellDef="let r">{{ r.created_at }}</td>
+      </ng-container>
+
+      <!-- Updated -->
+      <ng-container matColumnDef="updated_at">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header="updated_at">
+          Updated
+        </th>
+        <td mat-cell *matCellDef="let r">{{ r.updated_at }}</td>
+      </ng-container>
+
+      <tr
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+        class="bg-transparent"
+      ></tr>
+      <tr
+        mat-row
+        *matRowDef="let row; columns: displayedColumns;"
+		[matRowDefTrackBy]="trackById"
+        class="hover:bg-gray-50 dark:hover:bg-gray-800/60"
+      ></tr>
+    </table>
+
+    <mat-paginator
+      [length]="total"
+      [pageSize]="limit()"
+      [pageIndex]="pageIndex()"
+      [pageSizeOptions]="[5, 10, 20, 50, 100]"
+      (page)="onPage($event)"
+      class="border-t border-gray-200 dark:border-gray-700"
+    />
+  </div>
+</main>
