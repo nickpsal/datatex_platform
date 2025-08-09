@@ -13,9 +13,9 @@
       class="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
     >
       @if (!isToggled()) {
-        <span>☰</span>
+      <span>☰</span>
       }@else {
-        <span>✕</span>
+      <span>✕</span>
       }
     </button>
 
@@ -23,5 +23,36 @@
     <h1 class="text-3xl font-semibold">Datatex Dashboard</h1>
   </div>
 
-  <p>Welcome to your dashboard!</p>
+  @if (stats$ | async; as stats) {
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Articles -->
+    <div class="rounded-2xl">
+      <div class="text-sm">Articles</div>
+      <div class="text-3xl font-semibold mt-1">{{ stats.total_articles }}</div>
+      <div class="text-xs mt-2">Σύνολο άρθρων</div>
+    </div>
+
+    <!-- Users -->
+    <div class="rounded-2xl">
+      <div class="text-sm">Users</div>
+      <div class="text-3xl font-semibold mt-1">{{ stats.total_users }}</div>
+      <div class="text-xs mt-2">Εγγεγραμμένοι χρήστες</div>
+    </div>
+
+    <!-- Categories -->
+    <div class="rounded-2xl">
+      <div class="text-sm">Categories</div>
+      <div class="text-3xl font-semibold mt-1">
+        {{ stats.total_categories }}
+      </div>
+      <div class="text-xs mt-2">Σύνολο κατηγοριών</div>
+    </div>
+  </div>
+  } @else {
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="rounded-2xl p-6 animate-pulse h-28"></div>
+    <div class="rounded-2xl p-6 animate-pulse h-28"></div>
+    <div class="rounded-2xl p-6 animate-pulse h-28"></div>
+  </div>
+  }
 </main>

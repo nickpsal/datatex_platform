@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Blog\ArticlesController;
 use App\Http\Controllers\Blog\CategoriesController;
 use App\Http\Controllers\Portofolio\PortofolioController;
+use App\Http\Controllers\Admin\AdminController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -38,4 +39,7 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/createarticle', [ArticlesController::class, 'postArticle']);
     Route::put('/updatearticle/{id}', [ArticlesController::class, 'updateArticle']);
     Route::delete('/deletearticle/{id}', [ArticlesController::class, 'deleteArticle']);
+
+    //Dashboard routes
+    Route::get('/admin/stats', [AdminController::class, 'stats']);
 });
