@@ -1,0 +1,12 @@
+<ckeditor
+  [editor]="Editor"
+  [(ngModel)]="content"
+  (change)="onChange($event)"
+  [config]="{
+    placeholder: 'Γράψε το άρθρο σου εδώ...',
+    toolbar: [
+      'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
+      '|', 'blockQuote', 'insertTable', 'undo', 'redo', 'imageUpload'
+    ]
+  }"
+></ckeditor>

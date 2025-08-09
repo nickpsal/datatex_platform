@@ -1,0 +1,79 @@
+/* Ύψος */
+:host ::ng-deep .ck-editor__editable {
+  min-height: 360px;
+}
+
+/* Light theme — optional για σιγουριά */
+:host ::ng-deep .ck.ck-editor__main > .ck-editor__editable {
+  background-color: #ffffff;
+  color: #111827;
+  caret-color: #111827;
+}
+
+/* 🔥 Dark theme */
+:host-context(.dark) ::ng-deep .ck.ck-editor__main > .ck-editor__editable {
+  background-color: #111827; /* gray-900 */
+  color: #e5e7eb;            /* gray-200 */
+  caret-color: #e5e7eb;
+  border-color: #374151;      /* gray-700 */
+}
+
+/* Toolbar σε dark */
+:host-context(.dark) ::ng-deep .ck.ck-toolbar {
+  background: #0b1220;        /* dark panel */
+  border-color: #374151;
+}
+
+:host-context(.dark) ::ng-deep .ck.ck-toolbar .ck-button .ck-button__label,
+:host-context(.dark) ::ng-deep .ck.ck-toolbar .ck-icon {
+  color: #e5e7eb;
+}
+
+/* Dropdowns / panel χρώματα */
+:host-context(.dark) ::ng-deep .ck.ck-list, 
+:host-context(.dark) ::ng-deep .ck.ck-dropdown__panel, 
+:host-context(.dark) ::ng-deep .ck.ck-balloon-panel {
+  background: #0b1220;
+  color: #e5e7eb;
+  border-color: #374151;
+}
+
+/* Placeholder χρώμα σε dark */
+:host-context(.dark) ::ng-deep .ck-editor__editable .ck-placeholder::before {
+  color: #9ca3af; /* gray-400 */
+}
+
+/* Links μέσα στο περιεχόμενο */
+:host-context(.dark) ::ng-deep .ck-content a {
+  color: #60a5fa; /* blue-400 */
+}
+
+/* Focus state σε dark */
+:host-context(.dark) ::ng-deep .ck.ck-editor__editable:not(.ck-editor__nested-editable).ck-focused {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 1px #60a5fa;
+}
+
+:host ::ng-deep .ck-editor__editable {
+  min-height: 600px;
+  max-height: 600px;   /* 🔹 όριο ύψους */
+  overflow-y: auto;    /* 🔹 ενεργοποιεί scroll */
+}
+
+/* Optional: στυλ scrollbars */
+:host ::ng-deep .ck-editor__editable::-webkit-scrollbar {
+  width: 8px;
+}
+
+:host ::ng-deep .ck-editor__editable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+:host ::ng-deep .ck-editor__editable::-webkit-scrollbar-thumb {
+  background: #9ca3af; /* gray-400 */
+  border-radius: 4px;
+}
+
+:host ::ng-deep .ck-editor__editable::-webkit-scrollbar-thumb:hover {
+  background: #6b7280; /* gray-500 */
+}

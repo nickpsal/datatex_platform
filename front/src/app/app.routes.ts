@@ -10,6 +10,7 @@ import { PortofolioComponent } from './pages/portofolio/portofolio';
 import { BioComponent } from './pages/bio/bio';
 import { UserProfileComponent } from './pages/user-profile/user-profile';
 import { ArticlesTable } from './tables/articles-table/articles-table';
+import { ArticleEditorPageComponent } from './pages/article-editor-page/article-editor-page/article-editor-page';
 
 export const routes: Routes = [
   {
@@ -23,7 +24,8 @@ export const routes: Routes = [
       { path: 'bio', component: BioComponent, title: 'Datatex.gr - Bio' },
       { path: 'user-profile', component: UserProfileComponent, title: 'Datatex.gr - User Profile' },
       { path: 'admin', component: DashboardComponent, canActivate: [authGuard], title: 'Datatex.gr - Admin' },
-      { path: 'admin/articles', component: ArticlesTable, canActivate: [authGuard], title: 'Datatex.gr - Admin - Articles'}
+      { path: 'admin/articles', component: ArticlesTable, canActivate: [authGuard], title: 'Datatex.gr - Admin - Articles' },
+      { path: 'admin/articles/new', component: ArticleEditorPageComponent, canActivate: [authGuard], title: 'Datatex.gr - Admin - New Article' }
     ]
   },
   { path: 'login', component: LoginComponent },
