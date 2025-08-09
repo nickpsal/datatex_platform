@@ -18,7 +18,6 @@ export class ArticlesTable implements AfterViewInit {
   private cdr = inject(ChangeDetectorRef);
   private api = inject(ApiService);
 
-  // state
   limit = signal(10);
   offset = signal(0);
   sort_by = signal<string>('created_at');
@@ -35,7 +34,6 @@ export class ArticlesTable implements AfterViewInit {
   displayedColumns = ['id', 'title', 'category', 'author', 'created_at', 'updated_at'];
 
   ngAfterViewInit(): void {
-    // φορτώνουμε μετά το πρώτο render -> δεν σκάει το NG0100
     queueMicrotask(() => this.load());
   }
 
