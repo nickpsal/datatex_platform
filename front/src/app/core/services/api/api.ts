@@ -77,4 +77,14 @@ export class ApiService {
             })
         );
     }
+
+    getUsersDropdown(): Observable<{id: number; name: string}[]> {
+        return this.http.get<{id: number; name: string}[]>(`${this.API_URL}/getusersdropdown`, {
+            withCredentials: true
+        }).pipe(
+            map(response => {
+                return response;
+            })
+        );
+    }
 }

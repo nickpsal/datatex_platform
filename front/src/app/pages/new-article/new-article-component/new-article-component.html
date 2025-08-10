@@ -1,9 +1,9 @@
 <div class="p-4 space-y-6 max-w mx-auto">
   <h1 class="text-2xl font-semibold">Νέο Άρθρο</h1>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit('publish')" class="space-y-4">
-    <!-- Title -->
-    <div class="grid grid-cols-2 gap-4">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="space-y-4">
+    <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 gap-4">
+      <!-- Title -->
       <div>
         <label class="block text-sm font-medium">Τίτλος Άρθρου</label>
         <input
@@ -21,7 +21,8 @@
         </p>
         }
       </div>
-
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
       <!-- Category -->
       <div>
         <label class="block text-sm font-medium">Κατηγορία</label>
@@ -30,9 +31,9 @@
           class="block w-full border rounded p-2 bg-white dark:bg-gray-900"
         >
           <option value="" disabled selected>Επίλεξε κατηγορία…</option>
-          <option *ngFor="let c of categoryList" [value]="c.id">
-            {{ c.name }}
-          </option>
+          @for(c of categoryList; track c.id) {
+          <option [value]="c.id">{{ c.name }}</option>
+          }
         </select>
         @if (hasError('category')) {
         <p
@@ -42,21 +43,61 @@
         </p>
         }
       </div>
+
+      <!-- User -->
+      <div>
+        <label class="block text-sm font-medium">Χρήστης</label>
+        <select
+          formControlName="user_id"
+          class="block w-full border rounded p-2 bg-white dark:bg-gray-900"
+        >
+          <option value="" disabled selected>Επίλεξε χρήστη…</option>
+          @for(u of usersList; track u.id) {
+          <option [value]="u.id">{{ u.name }}</option>
+          }
+        </select>
+        @if (hasError('user')) {
+        <p
+          class="border rounded p-2 bg-white dark:bg-gray-900 transition-colors duration-300"
+        >
+          Ο χρήστης είναι υποχρεωτικός.
+        </p>
+        }
+      </div>
+      <!-- Status -->
+      <div>
+        <label class="block text-sm font-medium">Κατάσταση</label>
+        <select
+          formControlName="status"
+          class="block w-full border rounded p-2 bg-white dark:bg-gray-900"
+        >
+          <option value="" disabled selected>Επίλεξε κατάσταση…</option>
+          @for(u of SubmitMode; track u) {
+          <option [value]="u">{{ u }}</option>
+          }
+        </select>
+        @if (hasError('status')) {
+        <p
+          class="border rounded p-2 bg-white dark:bg-gray-900 transition-colors duration-300"
+        >
+          Η κατάσταση είναι υποχρεωτική.
+        </p>
+        }
+      </div>
     </div>
 
     <!-- Content -->
     <div>
-      <label class="block text-sm font-medium">Περιεχόμενο</label>
       <app-tiny-editor
         formControlName="content"
         [uploadUrl]="'/api/tiny-image'"
       ></app-tiny-editor>
       @if (hasError('content')) {
-        <p
-          class="border rounded p-2 bg-white dark:bg-gray-900 transition-colors duration-300"
-        >
-          Το περιεχόμενο είναι υποχρεωτικό.
-        </p>
+      <p
+        class="border rounded p-2 bg-white dark:bg-gray-900 transition-colors duration-300"
+      >
+        Το περιεχόμενο είναι υποχρεωτικό.
+      </p>
       }
     </div>
 

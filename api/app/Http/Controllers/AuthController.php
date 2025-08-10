@@ -162,4 +162,14 @@ class AuthController extends Controller
             'expires_in'   => JWTAuth::factory()->getTTL() * 30
         ]);
     }
+
+    public function getUsersDropdown(Request $request)
+    {
+        $users_dropdown = [];
+        $users = User::all();
+        foreach ($users as $user) {
+            $users_dropdown[] = ['id' => $user->id, 'name' => $user->name];
+        }
+        return response()->json($users_dropdown);
+    }
 }

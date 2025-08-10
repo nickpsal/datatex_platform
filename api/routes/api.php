@@ -17,6 +17,8 @@ Route::get('/getarticle/{slug}', [ArticlesController::class, 'getArticleBySlug']
 Route::get('/getcategories', [CategoriesController::class, 'getAllCategories']);
 Route::get('/getcategoriesdropdown', [CategoriesController::class, 'getCategoriesDropdown']);
 
+Route::get('/getusersdropdown', [AuthController::class, 'getUsersDropdown']);
+
 Route::get('/getportofolio', [PortofolioController::class, 'getPortofolio']);
 
 Route::middleware('auth:api')->group(function () {
