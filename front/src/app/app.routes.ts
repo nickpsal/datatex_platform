@@ -11,6 +11,7 @@ import { BioComponent } from './pages/bio/bio';
 import { UserProfileComponent } from './pages/user-profile/user-profile';
 import { ArticlesTable } from './tables/articles-table/articles-table';
 import { TinyDemoComponent } from './pages/tiny-demo/tiny-demo-component/tiny-demo-component';
+import { NewArticleComponent } from './pages/new-article/new-article-component/new-article-component';
 
 export const routes: Routes = [
   {
@@ -25,7 +26,8 @@ export const routes: Routes = [
       { path: 'bio', component: BioComponent, title: 'Datatex.gr - Bio' },
       { path: 'user-profile', component: UserProfileComponent, title: 'Datatex.gr - User Profile' },
       { path: 'admin', component: DashboardComponent, canActivate: [authGuard], title: 'Datatex.gr - Admin' },
-      { path: 'admin/articles', component: ArticlesTable, canActivate: [authGuard], title: 'Datatex.gr - Admin - Articles'}
+      { path: 'admin/articles', component: ArticlesTable, canActivate: [authGuard], title: 'Datatex.gr - Admin - Articles'},
+      { path: 'admin/articles/new', component: NewArticleComponent, canActivate: [authGuard], title: 'Datatex.gr - Admin - New Article' }
     ]
   },
   { path: 'login', component: LoginComponent },

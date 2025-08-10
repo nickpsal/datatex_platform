@@ -14,7 +14,7 @@ function getCookie(name: string): string | null {
   imports: [CommonModule, EditorModule, FormsModule],
   template: `
     <editor
-      apiKey="n573esuf2ge8g2esprotmx1g1ets33226z43mkiwoyq4g9em"   
+      apiKey="n573esuf2ge8g2esprotmx1g1ets33226z43mkiwoyq4g9em"
       [init]="init"
       [disabled]="disabled"
       [(ngModel)]="value"
@@ -28,7 +28,7 @@ function getCookie(name: string): string | null {
   ]
 })
 export class TinyEditorComponent implements ControlValueAccessor {
-  /** Laravel endpoint για image upload, π.χ. /api/ck-media ή /api/tiny-image */
+  /** Laravel endpoint για image upload, π.χ. /api/tiny-image */
   @Input({ required: true }) uploadUrl!: string;
 
   /** Προαιρετικό: override TinyMCE options */
@@ -41,7 +41,7 @@ export class TinyEditorComponent implements ControlValueAccessor {
   value = '';
   disabled = false;
 
-  // Default config (μόνο free plugins)
+  // Default config
   init: any = {
     base_url: 'https://cdn.tiny.cloud/1/n573esuf2ge8g2esprotmx1g1ets33226z43mkiwoyq4g9em/tinymce/8',
     suffix: '.min',
@@ -52,17 +52,20 @@ export class TinyEditorComponent implements ControlValueAccessor {
     statusbar: true,
     toolbar_mode: 'sliding',
 
-    plugins: 'lists link image table code media paste wordcount',
+    /** ➕ Προσθέσαμε 'pagebreak' για Read More */
+    plugins: 'lists link image table code media paste wordcount pagebreak',
+
+    /** ➕ Προσθέσαμε κουμπί pagebreak + custom "Read more" */
     toolbar: [
-      // ➕ βάλαμε "styles" για γρήγορη επιλογή Float
       'undo redo | styles blocks | bold italic underline strikethrough | ' +
       'alignleft aligncenter alignright alignjustify | ' +
-      'bullist numlist outdent indent | link image media table | removeformat | code'
+      'bullist numlist outdent indent | link image media table | ' +
+      'pagebreak readmorebtn | removeformat | code'
     ].join(' '),
 
     paste_data_images: false,
 
-    // ➕ Προσθήκη κλάσεων για εικόνες (Float Left/Right) στο Image dialog
+    // Image dialog classes
     image_advtab: true,
     image_class_list: [
       { title: '— None —', value: '' },
@@ -70,7 +73,7 @@ export class TinyEditorComponent implements ControlValueAccessor {
       { title: 'Float right', value: 'float-right' }
     ],
 
-    // ➕ Ίδιες επιλογές και από το "Styles" dropdown
+    // Style formats για εικόνες
     style_formats: [
       {
         title: 'Images',
@@ -82,19 +85,54 @@ export class TinyEditorComponent implements ControlValueAccessor {
     ],
     style_formats_autohide: true,
 
-    // ➕ CSS μέσα στο iframe του editor για το τύλιγμα κειμένου
+    /** ➕ Ο separator που θα αποθηκεύεται στον HTML είναι ακριβώς <!--more--> */
+    pagebreak_separator: '<!--more-->',
+    /** Προαιρετικά: για να σπάει block πριν/μετά τον separator */
+    pagebreak_split_block: true,
+
+    // CSS μέσα στο iframe του editor
     content_style: `
-    img.float-left{ float:left; margin:0 12px 12px 0; max-width:45%; height:auto; }
-    img.float-right{ float:right; margin:0 0 12px 12px; max-width:45%; height:auto; }
-    @media (max-width:640px){
-      img.float-left, img.float-right{ float:none; margin:0 0 12px 0; max-width:100%; }
-    }
-  `,
+      img.float-left{ float:left; margin:0 12px 12px 0; max-width:45%; height:auto; }
+      img.float-right{ float:right; margin:0 0 12px 12px; max-width:45%; height:auto; }
+      @media (max-width:640px){
+        img.float-left, img.float-right{ float:none; margin:0 0 12px 0; max-width:100%; }
+      }
+      /* Ορατή σήμανση του Read More όταν ο TinyMCE δείχνει placeholder */
+      .mce-pagebreak { display:block; position:relative; padding:8px 12px; border:1px dashed #999; }
+      .mce-pagebreak:after{
+        content:'READ MORE';
+        position:absolute; top:-10px; left:12px; font-size:11px; background:#fff; padding:0 6px;
+        color:#555; letter-spacing:0.04em;
+      }
+    `,
 
-    // (ό,τι είχες για upload handler – το κρατάς όπως είναι)
-    images_upload_handler: (blobInfo: any, progress: (p: number) => void) => { /* ...όπως το έχεις... */ }
+    /**
+     * Αν έχεις ήδη ανεβασμένο handler, κράτα τον.
+     * Εδώ αφήνω placeholder για συντομία:
+     */
+    images_upload_handler: (blobInfo: any, progress: (p: number) => void) => {
+      // ...όπως το έχεις ήδη υλοποιήσει...
+      return Promise.reject('images_upload_handler not implemented in this snippet');
+    },
+
+    /** ➕ setup: δηλώνουμε custom κουμπί και εξασφαλίζουμε "ένας μόνο" read more */
+    setup: (editor: any) => {
+      // Custom κουμπί, αν δεν θες το default pagebreak
+      editor.ui.registry.addButton('readmorebtn', {
+        icon: 'insert-time', // ή text: 'Read more'
+        tooltip: 'Insert Read more',
+        onAction: () => {
+          insertSingleReadMore(editor);
+        },
+      });
+
+      // Προσθέτουμε και στο context menu αν θέλεις
+      editor.ui.registry.addMenuItem('readmorebtn', {
+        text: 'Insert Read more',
+        onAction: () => insertSingleReadMore(editor),
+      });
+    },
   };
-
 
   // ControlValueAccessor
   writeValue(val: any): void { this.value = val ?? ''; }
@@ -117,5 +155,35 @@ export class TinyEditorComponent implements ControlValueAccessor {
     this.value = val;
     this.propagateChange(val);
     this.change.emit(val);
+  }
+}
+
+/** Helper: βάζουμε πάντα ΜΟΝΟ έναν <!--more--> */
+function insertSingleReadMore(editor: any) {
+  // Παίρνουμε raw περιεχόμενο ώστε να εντοπίσουμε υπάρχον <!--more-->
+  const raw = editor.getContent({ format: 'raw' });
+
+  // Αν υπάρχει ήδη, απλώς κάνε focus εκεί (προαιρετικά), αλλιώς βάλε νέο.
+  const hasMore = /<!--\s*more\s*-->/.test(raw);
+
+  if (!hasMore) {
+    // Εισάγουμε τον separator στο σημείο του cursor
+    editor.insertContent('<!--more-->');
+  } else {
+    // Προαιρετικό: βρες το placeholder και κάνε scroll
+    try {
+      const body = editor.getBody();
+      const walker = editor.dom.TreeWalker(body, body);
+      let node: any;
+      while ((node = walker.next())) {
+        if (node.nodeType === 8 && /more/.test(node.data)) {
+          // σχόλιο (Comment node) -> scroll προς τα εκεί
+          (node as any).scrollIntoView?.({ behavior: 'smooth', block: 'center' });
+          break;
+        }
+      }
+    } catch {
+      // no-op
+    }
   }
 }

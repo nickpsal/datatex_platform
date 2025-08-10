@@ -34,6 +34,21 @@ class CategoriesController extends Controller
         ], 200, ['Content-Type' => 'application/json']);
     }
 
+    public function getCategoriesDropdown(Request $request)
+    {
+        $categoriesDropdown = [];
+        $categories = Category::all();
+
+        foreach ($categories as $category) {
+            $categoriesDropdown[] = [
+                'id' => $category->id,
+                'name' => $category->name,
+            ];
+        }
+
+        return response()->json($categoriesDropdown, 200, ['Content-Type' => 'application/json']);
+    }
+
     public function postCategory(Request $request)
     {
         try {

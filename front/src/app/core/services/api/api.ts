@@ -67,4 +67,14 @@ export class ApiService {
             })
         );
     }
+
+    getCategoriesDropdown(): Observable<{id: number; name: string}[]> {
+        return this.http.get<{id: number; name: string}[]>(`${this.API_URL}/getcategoriesdropdown`, {
+            withCredentials: true
+        }).pipe(
+            map(response => {
+                return response;
+            })
+        );
+    }
 }

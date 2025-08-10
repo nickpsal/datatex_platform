@@ -15,6 +15,7 @@ Route::get('/getarticlesbycategory', [ArticlesController::class, 'getAllArticles
 Route::get('/getarticle/{slug}', [ArticlesController::class, 'getArticleBySlug']);
 
 Route::get('/getcategories', [CategoriesController::class, 'getAllCategories']);
+Route::get('/getcategoriesdropdown', [CategoriesController::class, 'getCategoriesDropdown']);
 
 Route::get('/getportofolio', [PortofolioController::class, 'getPortofolio']);
 
