@@ -10,7 +10,6 @@ import { TinyEditorComponent } from '../../../components/tinymce/tiny-editor-com
   template: `
     <div class="p-4 space-y-4">
       <form [formGroup]="form" class="space-y-3">
-        <label class="block text-sm font-medium">Περιγραφή</label>
         <app-tiny-editor
           formControlName="content"
           [uploadUrl]="'/api/tiny-image'"

@@ -14,7 +14,7 @@ function getCookie(name: string): string | null {
   imports: [CommonModule, EditorModule, FormsModule],
   template: `
     <editor
-      apiKey="no-api-key"   
+      apiKey="n573esuf2ge8g2esprotmx1g1ets33226z43mkiwoyq4g9em"   
       [init]="init"
       [disabled]="disabled"
       [(ngModel)]="value"
@@ -24,8 +24,7 @@ function getCookie(name: string): string | null {
   `,
   providers: [
     { provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => TinyEditorComponent), multi: true },
-    //{ provide: TINYMCE_SCRIPT_SRC, useValue: '/tinymce/tinymce.min.js' },
-    { provide: TINYMCE_SCRIPT_SRC, useValue: 'https://cdn.jsdelivr.net/npm/tinymce@7.4.1/tinymce.min.js' }
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'https://cdn.tiny.cloud/1/n573esuf2ge8g2esprotmx1g1ets33226z43mkiwoyq4g9em/tinymce/8/tinymce.min.js' }
   ]
 })
 export class TinyEditorComponent implements ControlValueAccessor {
@@ -44,10 +43,8 @@ export class TinyEditorComponent implements ControlValueAccessor {
 
   // Default config (μόνο free plugins)
   init: any = {
-    base_url: 'https://cdn.jsdelivr.net/npm/tinymce@7.4.1',
-    license_key: 'gpl',
+    base_url: 'https://cdn.tiny.cloud/1/n573esuf2ge8g2esprotmx1g1ets33226z43mkiwoyq4g9em/tinymce/8',
     suffix: '.min',
-
     height: 600,
     resize: false,
     menubar: false,
