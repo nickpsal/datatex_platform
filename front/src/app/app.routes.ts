@@ -10,6 +10,7 @@ import { PortofolioComponent } from './pages/portofolio/portofolio';
 import { BioComponent } from './pages/bio/bio';
 import { UserProfileComponent } from './pages/user-profile/user-profile';
 import { ArticlesTable } from './tables/articles-table/articles-table';
+import { TinyDemoComponent } from './pages/tiny-demo/tiny-demo-component/tiny-demo-component';
 
 export const routes: Routes = [
   {
@@ -17,6 +18,7 @@ export const routes: Routes = [
     component: LayoutComponent,
     children: [
       { path: '', component: HomeComponent, title: 'Datatex.gr - Home' },
+      { path: 'tiny-demo', component: TinyDemoComponent, title: 'Datatex.gr - TinyMCE Demo' },
       { path: 'home', component: HomeComponent, title: 'Datatex.gr - Home' },
       { path: 'blog/:category/:slug', component: ArticleDetailsComponent , title: 'Datatex.gr - Article Details' },
       { path: 'portofolio', component: PortofolioComponent, title: 'Datatex.gr - Portfolio' },
