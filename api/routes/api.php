@@ -38,7 +38,7 @@ Route::middleware('auth:api')->group(function () {
     Route::delete('/deletecategory/{id}', [CategoriesController::class, 'deleteCategory']);
     
     // Articles routes
-    Route::post('/uploadimage', [ArticlesController::class, 'uploadFeaturedImage']);
+    Route::post('/uploadimage', [ArticlesController::class, 'uploadimage']);
     Route::post('/createarticle', [ArticlesController::class, 'postArticle']);
     Route::put('/updatearticle/{id}', [ArticlesController::class, 'updateArticle']);
     Route::delete('/deletearticle/{id}', [ArticlesController::class, 'deleteArticle']);

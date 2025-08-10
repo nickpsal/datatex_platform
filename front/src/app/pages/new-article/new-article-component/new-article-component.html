@@ -35,7 +35,7 @@
           <option [value]="c.id">{{ c.name }}</option>
           }
         </select>
-        @if (hasError('category')) {
+        @if (hasError('category_id')) {
         <p
           class="border rounded p-2 bg-white dark:bg-gray-900 transition-colors duration-300"
         >
@@ -56,7 +56,7 @@
           <option [value]="u.id">{{ u.name }}</option>
           }
         </select>
-        @if (hasError('user')) {
+        @if (hasError('user_id')) {
         <p
           class="border rounded p-2 bg-white dark:bg-gray-900 transition-colors duration-300"
         >
@@ -85,14 +85,57 @@
         }
       </div>
     </div>
+    <!-- Featured Image -->
+    <div class="space-y-2">
+      <label class="block text-sm font-medium">Featured Image</label>
+
+      <div class="flex items-center gap-3">
+        <input
+          type="file"
+          accept=".jpg,.jpeg,.png,.gif"
+          (change)="onFeaturedPicked($event)"
+          [disabled]="featuredUploading()"
+          class="block w-full border rounded p-2 bg-white dark:bg-gray-900 transition-colors duration-300"
+        />
+        <button
+          type="button"
+          class="px-3 py-2 rounded border bg-gray-50 dark:bg-gray-800 disabled:opacity-50"
+          (click)="clearFeatured()"
+          [disabled]="!featuredUrl() && !featuredUploading()"
+        >
+          Καθαρισμός
+        </button>
+      </div>
+
+      <div *ngIf="featuredUploading()" class="w-full h-2 bg-gray-200 rounded">
+        <div
+          class="h-2 bg-blue-600 rounded transition-all"
+          [style.width.%]="featuredProgress()"
+        ></div>
+        <p class="text-xs text-gray-500 mt-1">{{ featuredProgress() }}%</p>
+      </div>
+
+      <div *ngIf="featuredUrl()" class="mt-2">
+        <img
+          [src]="featuredUrl()!"
+          alt="Featured"
+          class="max-h-48 rounded border object-contain"
+        />
+        <p class="text-xs text-gray-500 mt-1">Θα σταλεί με το άρθρο ως URL.</p>
+      </div>
+
+      <p *ngIf="featuredError()" class="text-xs text-red-600">
+        {{ featuredError() }}
+      </p>
+    </div>
 
     <!-- Content -->
     <div>
       <app-tiny-editor
-        formControlName="content"
-        [uploadUrl]="'/api/tiny-image'"
+        formControlName="full_content"
+        [uploadUrl]="'/uploadimage'"
       ></app-tiny-editor>
-      @if (hasError('content')) {
+      @if (hasError('full_content')) {
       <p
         class="border rounded p-2 bg-white dark:bg-gray-900 transition-colors duration-300"
       >

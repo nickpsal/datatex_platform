@@ -223,11 +223,10 @@ class ArticlesController extends Controller
         return response()->json(['status' => 'error', 'message' => 'Failed to delete article'], 500, ['Content-Type' => 'application/json']);
     }
 
-    public function uploadFeaturedImage(Request $request)
+    public function uploadimage(Request $request)
     {
         $request->validate([
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'path' => 'required|string'
         ]);
 
         $user = JWTAuth::parseToken()->authenticate();
@@ -237,7 +236,7 @@ class ArticlesController extends Controller
         }
 
         $image = $request->file('image');
-        $customPath = trim($request->path, '/'); // Καθαρισμός slashes
+        $customPath = 'articles/' . date('Y/m/d');
         $destinationPath = public_path("assets/images/{$customPath}");
 
         // Δημιουργία φακέλου αν δεν υπάρχει

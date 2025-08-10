@@ -1,9 +1,10 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpParams, HttpRequest } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { map, Observable } from 'rxjs';
 import { Article } from '../../interfaces/article';
 import { Portofolio } from '../../interfaces/portofolio';
+import { FeaturedUploadResponse } from '../../interfaces/image_upload';
 
 interface LoginPayload {
     email: string;
@@ -68,8 +69,8 @@ export class ApiService {
         );
     }
 
-    getCategoriesDropdown(): Observable<{id: number; name: string}[]> {
-        return this.http.get<{id: number; name: string}[]>(`${this.API_URL}/getcategoriesdropdown`, {
+    getCategoriesDropdown(): Observable<{ id: number; name: string }[]> {
+        return this.http.get<{ id: number; name: string }[]>(`${this.API_URL}/getcategoriesdropdown`, {
             withCredentials: true
         }).pipe(
             map(response => {
@@ -78,13 +79,24 @@ export class ApiService {
         );
     }
 
-    getUsersDropdown(): Observable<{id: number; name: string}[]> {
-        return this.http.get<{id: number; name: string}[]>(`${this.API_URL}/getusersdropdown`, {
+    getUsersDropdown(): Observable<{ id: number; name: string }[]> {
+        return this.http.get<{ id: number; name: string }[]>(`${this.API_URL}/getusersdropdown`, {
             withCredentials: true
         }).pipe(
             map(response => {
                 return response;
             })
+        );
+    }
+
+    uploadFeaturedImage(file: File): Observable<FeaturedUploadResponse> {
+        const fd = new FormData();
+        fd.append('image', file);
+
+        return this.http.post<FeaturedUploadResponse>(
+            `${this.API_URL}/uploadimage`,
+            fd,
+            { withCredentials: true }
         );
     }
 }
