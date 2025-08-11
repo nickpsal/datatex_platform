@@ -38,9 +38,9 @@ export class TinyEditorComponent implements ControlValueAccessor {
   /** Εκπομπές */
   @Output() ready = new EventEmitter<any>();
   @Output() change = new EventEmitter<string>();
+  @Input({ required: true }) uploadUrl!: string;
 
   private _ed: any;
-
   constructor(private api: ApiService) { }
 
   value = '';
@@ -158,18 +158,6 @@ export class TinyEditorComponent implements ControlValueAccessor {
         }
       };
       input.click();
-    },
-
-    setup: (editor: any) => {
-      editor.ui.registry.addButton('readmorebtn', {
-        icon: 'insert-time',
-        tooltip: 'Insert Read more',
-        onAction: () => { insertSingleReadMore(editor); },
-      });
-      editor.ui.registry.addMenuItem('readmorebtn', {
-        text: 'Insert Read more',
-        onAction: () => insertSingleReadMore(editor),
-      });
     },
   };
 

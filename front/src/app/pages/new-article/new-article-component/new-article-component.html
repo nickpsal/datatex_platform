@@ -134,6 +134,7 @@
     <div>
       <app-tiny-editor
         formControlName="full_content"
+        [uploadUrl]="'http://localhost/datatex_platform/api/public/api/uploadimage'"
       ></app-tiny-editor>
       @if (hasError('full_content')) {
       <p
