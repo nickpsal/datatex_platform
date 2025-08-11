@@ -5,11 +5,6 @@ import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/f
 import { ApiService } from '../../../core/services/api/api';
 import { lastValueFrom } from 'rxjs';
 
-function getCookie(name: string): string | null {
-  const match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([$?*|{}\]\\^])/g, '\\$1') + '=([^;]*)'));
-  return match ? match[1] : null;
-}
-
 @Component({
   selector: 'app-tiny-editor',
   standalone: true,
@@ -38,7 +33,6 @@ export class TinyEditorComponent implements ControlValueAccessor {
   /** Εκπομπές */
   @Output() ready = new EventEmitter<any>();
   @Output() change = new EventEmitter<string>();
-  @Input({ required: true }) uploadUrl!: string;
 
   private _ed: any;
   constructor(private api: ApiService) { }
@@ -185,7 +179,6 @@ export class TinyEditorComponent implements ControlValueAccessor {
   }
 
   private async uploadViaApiService(fileOrBlob: Blob, filename: string): Promise<string> {
-    // TinyMCE δίνει Blob -> το κάνουμε File γιατί συνήθως έτσι το περιμένει το ApiService
     const file =
       fileOrBlob instanceof File
         ? fileOrBlob
@@ -201,18 +194,11 @@ export class TinyEditorComponent implements ControlValueAccessor {
   }
 }
 
-
-
-/** Helper: βάζουμε πάντα ΜΟΝΟ έναν <!--more--> */
 function insertSingleReadMore(editor: any) {
-  // Παίρνουμε raw περιεχόμενο ώστε να εντοπίσουμε υπάρχον <!--more-->
   const raw = editor.getContent({ format: 'raw' });
-
-  // Αν υπάρχει ήδη, απλώς κάνε focus εκεί (προαιρετικά), αλλιώς βάλε νέο.
   const hasMore = /<!--\s*more\s*-->/.test(raw);
 
   if (!hasMore) {
-    // Εισάγουμε τον separator στο σημείο του cursor
     editor.insertContent('<!--more-->');
   } else {
     // Προαιρετικό: βρες το placeholder και κάνε scroll
