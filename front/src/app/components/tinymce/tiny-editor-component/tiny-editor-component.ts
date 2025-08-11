@@ -39,6 +39,8 @@ export class TinyEditorComponent implements ControlValueAccessor {
   @Output() ready = new EventEmitter<any>();
   @Output() change = new EventEmitter<string>();
 
+  private _ed: any;
+
   constructor(private api: ApiService) { }
 
   value = '';
@@ -66,6 +68,9 @@ export class TinyEditorComponent implements ControlValueAccessor {
     paste_data_images: false,
 
     image_advtab: true,
+    image_description: true,
+    a11y_advanced_options: true,
+    extended_valid_elements: 'img[class|src|alt|title|width|height|style|role]',
     image_class_list: [
       { title: '— None —', value: '' },
       { title: 'Float left', value: 'float-left' },
@@ -106,7 +111,33 @@ export class TinyEditorComponent implements ControlValueAccessor {
 
     // Drag & drop / paste
     images_upload_handler: (blobInfo: any) => {
-      return this.uploadViaApiService(blobInfo.blob(), blobInfo.filename());
+      const name = blobInfo.filename();
+      return this.uploadViaApiService(blobInfo.blob(), name).then((url: string) => {
+        // Μετά το upload, βάλε alt και αφαίρεσε το role="presentation"
+        queueMicrotask(() => {
+          const ed = this._ed;
+          if (!ed) return;
+          const node = ed.selection.getNode();
+          if (node && node.nodeName === 'IMG') {
+            node.setAttribute('alt', name);
+            node.removeAttribute('role');
+          }
+        });
+        return url;
+      });
+    },
+
+    setup: (editor: any) => {
+      this._ed = editor; // ⬅ κρατάμε ref στον editor
+
+      // Όποτε αλλάζει περιεχόμενο: αν υπάρχει alt ≠ "", βγάλε το role="presentation"
+      editor.on('Change', () => {
+        editor.dom.select('img[alt]:not([alt=""])').forEach((img: any) => {
+          img.removeAttribute('role');
+        });
+      });
+
+      // ...ό,τι άλλο setup έχεις (π.χ. readmorebtn)...
     },
 
     // Dialog "Insert image"
@@ -164,20 +195,20 @@ export class TinyEditorComponent implements ControlValueAccessor {
     this.propagateChange(val);
     this.change.emit(val);
   }
-  
+
   private async uploadViaApiService(fileOrBlob: Blob, filename: string): Promise<string> {
     // TinyMCE δίνει Blob -> το κάνουμε File γιατί συνήθως έτσι το περιμένει το ApiService
     const file =
       fileOrBlob instanceof File
         ? fileOrBlob
         : new File([fileOrBlob], filename, { type: (fileOrBlob as any).type || 'application/octet-stream' });
-  
+
     const res: any = await lastValueFrom(this.api.uploadFeaturedImage(file));
     // Υποστήριξη και των 2 formats απάντησης
     if (res?.status === 'success' && res?.url) return res.url;
     if (res?.location) return res.location;
     if (res?.url) return res.url;
-  
+
     throw new Error(res?.message || 'Αποτυχία ανεβάσματος.');
   }
 }
