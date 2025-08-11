@@ -95,6 +95,7 @@ export class NewArticleComponent implements OnInit {
       input.value = '';
       return;
     }
+
     const MAX_MB = 2;
     if (file.size > MAX_MB * 1024 * 1024) {
       this.featuredError.set(`Μέγιστο μέγεθος: ${MAX_MB}MB.`);
@@ -121,11 +122,13 @@ export class NewArticleComponent implements OnInit {
       });
   }
 
-  clearFeatured() {
+  clearFeatured(input?: HTMLInputElement) {
+    if (input) input.value = '';
+    this.form.patchValue({ featured_image: '' });
+    this.featuredUploading.set(false);
     this.featuredUrl.set(null);
     this.featuredProgress.set(0);
     this.featuredError.set(null);
-    this.form.patchValue({ featured_image: '' });
   }
 
   onSubmit(): void {
