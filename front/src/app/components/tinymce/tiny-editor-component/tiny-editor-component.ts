@@ -2,6 +2,8 @@ import { Component, EventEmitter, Input, Output, forwardRef } from '@angular/cor
 import { CommonModule } from '@angular/common';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { ApiService } from '../../../core/services/api/api';
+import { lastValueFrom } from 'rxjs';
 
 function getCookie(name: string): string | null {
   const match = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([$?*|{}\]\\^])/g, '\\$1') + '=([^;]*)'));
@@ -29,7 +31,6 @@ function getCookie(name: string): string | null {
 })
 export class TinyEditorComponent implements ControlValueAccessor {
   /** Laravel endpoint για image upload, π.χ. /api/tiny-image */
-  @Input({ required: true }) uploadUrl!: string;
 
   /** Προαιρετικό: override TinyMCE options */
   @Input() options: Record<string, any> = {};
@@ -37,6 +38,8 @@ export class TinyEditorComponent implements ControlValueAccessor {
   /** Εκπομπές */
   @Output() ready = new EventEmitter<any>();
   @Output() change = new EventEmitter<string>();
+
+  constructor(private api: ApiService) { }
 
   value = '';
   disabled = false;
@@ -52,10 +55,7 @@ export class TinyEditorComponent implements ControlValueAccessor {
     statusbar: true,
     toolbar_mode: 'sliding',
 
-    /** ➕ Προσθέσαμε 'pagebreak' για Read More */
     plugins: 'lists link image table code media paste wordcount pagebreak',
-
-    /** ➕ Προσθέσαμε κουμπί pagebreak + custom "Read more" */
     toolbar: [
       'undo redo | styles blocks | bold italic underline strikethrough | ' +
       'alignleft aligncenter alignright alignjustify | ' +
@@ -65,15 +65,12 @@ export class TinyEditorComponent implements ControlValueAccessor {
 
     paste_data_images: false,
 
-    // Image dialog classes
     image_advtab: true,
     image_class_list: [
       { title: '— None —', value: '' },
       { title: 'Float left', value: 'float-left' },
       { title: 'Float right', value: 'float-right' }
     ],
-
-    // Style formats για εικόνες
     style_formats: [
       {
         title: 'Images',
@@ -85,48 +82,59 @@ export class TinyEditorComponent implements ControlValueAccessor {
     ],
     style_formats_autohide: true,
 
-    /** ➕ Ο separator που θα αποθηκεύεται στον HTML είναι ακριβώς <!--more--> */
     pagebreak_separator: '<!--more-->',
-    /** Προαιρετικά: για να σπάει block πριν/μετά τον separator */
     pagebreak_split_block: true,
 
-    // CSS μέσα στο iframe του editor
     content_style: `
-      img.float-left{ float:left; margin:0 12px 12px 0; max-width:45%; height:auto; }
-      img.float-right{ float:right; margin:0 0 12px 12px; max-width:45%; height:auto; }
-      @media (max-width:640px){
-        img.float-left, img.float-right{ float:none; margin:0 0 12px 0; max-width:100%; }
-      }
-      /* Ορατή σήμανση του Read More όταν ο TinyMCE δείχνει placeholder */
-      .mce-pagebreak { display:block; position:relative; padding:8px 12px; border:1px dashed #999; }
-      .mce-pagebreak:after{
-        content:'READ MORE';
-        position:absolute; top:-10px; left:12px; font-size:11px; background:#fff; padding:0 6px;
-        color:#555; letter-spacing:0.04em;
-      }
-    `,
+    img.float-left{ float:left; margin:0 12px 12px 0; max-width:45%; height:auto; }
+    img.float-right{ float:right; margin:0 0 12px 12px; max-width:45%; height:auto; }
+    @media (max-width:640px){
+      img.float-left, img.float-right{ float:none; margin:0 0 12px 0; max-width:100%; }
+    }
+    .mce-pagebreak { display:block; position:relative; padding:8px 12px; border:1px dashed #999; }
+    .mce-pagebreak:after{
+      content:'READ MORE';
+      position:absolute; top:-10px; left:12px; font-size:11px; background:#fff; padding:0 6px;
+      color:#555; letter-spacing:0.04em;
+    }
+  `,
 
-    /**
-     * Αν έχεις ήδη ανεβασμένο handler, κράτα τον.
-     * Εδώ αφήνω placeholder για συντομία:
-     */
-    images_upload_handler: (blobInfo: any, progress: (p: number) => void) => {
-      // ...όπως το έχεις ήδη υλοποιήσει...
-      return Promise.reject('images_upload_handler not implemented in this snippet');
+    // === Upload εικόνας μέσω ApiService ===
+    automatic_uploads: true,
+    images_upload_credentials: true,
+    file_picker_types: 'image',
+
+    // Drag & drop / paste
+    images_upload_handler: (blobInfo: any) => {
+      return this.uploadViaApiService(blobInfo.blob(), blobInfo.filename());
     },
 
-    /** ➕ setup: δηλώνουμε custom κουμπί και εξασφαλίζουμε "ένας μόνο" read more */
-    setup: (editor: any) => {
-      // Custom κουμπί, αν δεν θες το default pagebreak
-      editor.ui.registry.addButton('readmorebtn', {
-        icon: 'insert-time', // ή text: 'Read more'
-        tooltip: 'Insert Read more',
-        onAction: () => {
-          insertSingleReadMore(editor);
-        },
-      });
+    // Dialog "Insert image"
+    file_picker_callback: (cb: any, _value: any, meta: any) => {
+      if (meta.filetype !== 'image') return;
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'image/*';
+      input.onchange = async () => {
+        const file = input.files?.[0];
+        if (!file) return;
+        try {
+          const url = await this.uploadViaApiService(file, file.name);
+          cb(url, { alt: file.name, title: file.name });
+        } catch (e) {
+          console.error('Tiny upload error:', e);
+          alert('Αποτυχία ανεβάσματος εικόνας.');
+        }
+      };
+      input.click();
+    },
 
-      // Προσθέτουμε και στο context menu αν θέλεις
+    setup: (editor: any) => {
+      editor.ui.registry.addButton('readmorebtn', {
+        icon: 'insert-time',
+        tooltip: 'Insert Read more',
+        onAction: () => { insertSingleReadMore(editor); },
+      });
       editor.ui.registry.addMenuItem('readmorebtn', {
         text: 'Insert Read more',
         onAction: () => insertSingleReadMore(editor),
@@ -156,7 +164,25 @@ export class TinyEditorComponent implements ControlValueAccessor {
     this.propagateChange(val);
     this.change.emit(val);
   }
+  
+  private async uploadViaApiService(fileOrBlob: Blob, filename: string): Promise<string> {
+    // TinyMCE δίνει Blob -> το κάνουμε File γιατί συνήθως έτσι το περιμένει το ApiService
+    const file =
+      fileOrBlob instanceof File
+        ? fileOrBlob
+        : new File([fileOrBlob], filename, { type: (fileOrBlob as any).type || 'application/octet-stream' });
+  
+    const res: any = await lastValueFrom(this.api.uploadFeaturedImage(file));
+    // Υποστήριξη και των 2 formats απάντησης
+    if (res?.status === 'success' && res?.url) return res.url;
+    if (res?.location) return res.location;
+    if (res?.url) return res.url;
+  
+    throw new Error(res?.message || 'Αποτυχία ανεβάσματος.');
+  }
 }
+
+
 
 /** Helper: βάζουμε πάντα ΜΟΝΟ έναν <!--more--> */
 function insertSingleReadMore(editor: any) {
